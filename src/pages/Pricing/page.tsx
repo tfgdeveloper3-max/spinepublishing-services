@@ -1,10 +1,10 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import PricingPlans from "@/components/Pricing/PricingPlans";
-import PageHero from "@/components/About/AboutHero";
 import PartnersStrip from "@/components/PartnerStrip";
 import PricingTestimonials from "@/components/Pricing/PricingTestimonials";
 import PricingFAQ from "@/components/Pricing/PricingFaq";
+import PageHero from "@/components/PageHero";
 
 export default function PricingPage() {
     return (

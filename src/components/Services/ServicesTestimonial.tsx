@@ -8,75 +8,39 @@ const TESTIMONIALS: Testimonial[] = [
     {
         name: "Jonathan Vance",
         role: "Precision Editing",
-        image: "/images/testimonials/client1.png",
+        image: "/images/testimonials/Jonathan-Vance.png",
         text: "The editing team at SpinePublishing transformed my rough manuscript into a crisp, captivating story. Their line-by-line feedback eliminated errors while keeping my authentic author voice completely intact.",
     },
     {
         name: "Clara Sterling",
         role: "Precision Editing",
-        image: "/images/testimonials/client2.png",
+        image: "/images/testimonials/Clara-Sterling.png",
         text: "I was amazed by the depth of the developmental editing. SpinePublishing pinpointed plot holes I had overlooked for months and gave my narrative the exact flow it needed.",
     },
     {
         name: "Marcus Thorne",
         role: "Flawless Formatting",
-        image: "/images/testimonials/client3.png",
+        image: "/images/testimonials/Marcus-Thorne.png",
         text: "Interior layout used to be my biggest headache, but SpinePublishing handled it effortlessly. Both my eBook and paperback look stunning with clean typography and flawless page breaks.",
     },
     {
         name: "Evelyn Reed",
         role: "Flawless Formatting",
-        image: "/images/testimonials/client4.png",
+        image: "/images/testimonials/Evelyn-Reed.png",
         text: "The real-time formatting preview was incredible. SpinePublishing delivered an interior design that looks like it came straight out of a traditional publishing house.",
     },
     {
         name: "Julian Hayes",
         role: "High-Impact Cover Design",
-        image: "/images/testimonials/client5.png",
+        image: "/images/testimonials/Julian-Hayes.png",
         text: "My book cover stops scrollers in their tracks! SpinePublishing captured the exact mood and theme of my novel in a visually striking design that constantly gets compliments.",
     },
     {
         name: "Samantha Blake",
         role: "High-Impact Cover Design",
-        image: "/images/testimonials/client6.png",
+        image: "/images/testimonials/Samantha-Blake.png",
         text: "The cover design team took my vague ideas and turned them into a masterpiece. SpinePublishing created a cover that stands out among top bestsellers in my genre.",
-    },
-    {
-        name: "David K. Miller",
-        role: "Custom Illustrations",
-        image: "/images/testimonials/client7.png",
-        text: "The artwork for my children's book blew me away. SpinePublishing's artists created vibrant, expressive illustrations that brought my characters to life exactly as I imagined.",
-    },
-    {
-        name: "Maya Lin",
-        role: "Custom Illustrations",
-        image: "/images/testimonials/client8.png",
-        text: "From bespoke graphics to detailed chapter headers, SpinePublishing added incredible visual flair to my book. Readers frequently highlight how beautiful the illustrations are.",
-    },
-    {
-        name: "Richard Morales",
-        role: "Strategic Book Marketing",
-        image: "/images/testimonials/client9.png",
-        text: "SpinePublishing's marketing strategy gave my launch instant momentum. Their ad campaigns and reviewer outreach drove my book straight to the top of its target categories.",
-    },
-    {
-        name: "Hannah Montgomery",
-        role: "Strategic Book Marketing",
-        image: "/images/testimonials/client10.png",
-        text: "I had no idea how to market my book, but SpinePublishing made it simple. Their automated multi-channel campaigns brought steady sales and continuous reader engagement.",
-    },
-    {
-        name: "Christopher Bell",
-        role: "Premium Print Production",
-        image: "/images/testimonials/client11.png",
-        text: "Holding the physical copy of my book was an emotional moment. The print quality, paper feel, and binding durability from SpinePublishing far exceeded standard print-on-demand expectations.",
-    },
-    {
-        name: "Beatrice Dupont",
-        role: "Premium Print Production",
-        image: "/images/testimonials/client12.png",
-        text: "The crispness of the text and richness of the color prints are outstanding. SpinePublishing ensures every physical book delivered to readers feels luxurious and high-end.",
-    },
+    }
 ];
 
 const AUTOPLAY_MS = 6000;

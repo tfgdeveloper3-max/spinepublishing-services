@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { EASE } from "../motion";
+import { useLeadModal } from "../LeadModal";
 
 const ABOUT_IMAGE = "/images/Author.png";
 
@@ -28,6 +29,7 @@ export default function AboutUs() {
     const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 0.75", "end 0.55"] });
     const handleTop = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
     const [active, setActive] = useState(0);
+    const { openLeadModal } = useLeadModal();
 
     useMotionValueEvent(scrollYProgress, "change", (p) => {
         setActive(Math.min(FEATURES.length - 1, Math.max(0, Math.floor(p * FEATURES.length))));
@@ -123,14 +125,15 @@ export default function AboutUs() {
                         ))}
                     </div>
 
-                    <motion.a
-                        href="#get-started"
+                    <motion.button
+                        type="button"
+                        onClick={openLeadModal}
                         className="bg-brand-gradient mt-8 inline-flex self-start px-8 py-2.5 font-body text-[15px] font-semibold text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] lg:ml-14 2xl:text-[17px]"
                         whileHover={{ scale: 1.04 }}
                         whileTap={{ scale: 0.97 }}
                     >
                         Get Started
-                    </motion.a>
+                    </motion.button>
                 </div>
             </div>
         </section>

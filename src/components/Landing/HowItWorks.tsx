@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { EASE } from "../motion";
+import { useLeadModal } from "../LeadModal";
 
 type IconName = "upload" | "award" | "edit" | "chat" | "cover" | "layout" | "globe" | "chart";
 
@@ -103,7 +104,7 @@ const STEPS: Step[] = [
             { icon: "edit", text: "SpinePublishing uses state-of-the-art technology to analyze your tone, target audience, and genre style, instantly catching grammar flaws and sharpening your narrative flow." },
             { icon: "chat", text: "Access elite professional human editors on demand whenever your manuscript calls for an extra tier of polish." },
         ],
-        image: "/images/Tab2.jpg",
+        image: "/images/Step-02.jpg",
     },
     {
         title: "Design Your Cover & Layout",
@@ -112,7 +113,7 @@ const STEPS: Step[] = [
             { icon: "cover", text: "Select from custom-built cover templates tailored to match your book's exact vibe, or upload your own vision using our seamless cover enhancement toolkit." },
             { icon: "layout", text: "Fine-tune your interior page layout in real time to match industry standards and genre expectations." },
         ],
-        image: "/images/Tab3.jpg",
+        image: "/images/Step-03.jpg",
     },
     {
         title: "Publish & Distribute",
@@ -121,7 +122,7 @@ const STEPS: Step[] = [
             { icon: "globe", text: "Hit launch and let SpinePublishing syndicate your book across major worldwide retailers and libraries in multiple formats." },
             { icon: "chart", text: "Run automated multi-channel ad campaigns across social media platforms while tracking your sales and royalties from your personal author dashboard." },
         ],
-        image: "/images/Tab4.jpg",
+        image: "/images/Step-04.jpg",
     },
 ];
 
@@ -175,6 +176,7 @@ function DraggedPaper() {
 export default function HowItWorks() {
     const [active, setActive] = useState(0);
     const step = STEPS[active];
+    const { openLeadModal } = useLeadModal();
 
     return (
         <section id="how-it-works" className="bg-[#f7f6f9] py-20 lg:py-28">
@@ -261,15 +263,16 @@ export default function HowItWorks() {
                                     ))}
                                 </ul>
 
-                                <motion.a
-                                    href="#get-started"
+                                <motion.button
+                                    type="button"
+                                    onClick={openLeadModal}
                                     className="bg-brand-gradient mt-8 inline-flex items-center gap-2 px-8 py-2.5 font-body text-[15px] font-semibold text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] 2xl:text-[17px]"
                                     whileHover={{ scale: 1.04 }}
                                     whileTap={{ scale: 0.97 }}
                                 >
                                     Get Started
                                     <span aria-hidden="true">&rsaquo;</span>
-                                </motion.a>
+                                </motion.button>
                             </motion.div>
                         </AnimatePresence>
 

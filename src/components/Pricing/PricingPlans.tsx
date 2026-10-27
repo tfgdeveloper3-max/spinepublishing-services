@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { animate, motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { EASE } from "../motion";
 import GlowBackdrop from "../GlowBackdrop";
+import { useLeadModal } from "../LeadModal";
 
 const iconProps = {
     width: 38,
@@ -67,15 +68,16 @@ const PLANS: Plan[] = [
         accent: "#1f9e86",
         band: "rgba(214, 238, 234, 0.75)",
         features: [
-            "3-Service Core Publishing Suite",
-            "3 Custom Cover & Interior Design Concepts",
-            "5 Professional Stock Images",
-            "1 Interactive eBook Slider Banner",
-            "FREE Search Engine Friendly Metadata Setup",
-            "Complete Industry-Standard Formatting",
-            "48 to 72 Hours Turnaround Time",
-            "Author Social Media Page Setup (Facebook)",
-            "Author Social Media Page Setup (X / Twitter)",
+            "Manuscript Review & Assessment",
+            "Basic Proofreading (up to 30,000 words)",
+            "Standard Cover Design (1 concept)",
+            "Interior Formatting for Paperback",
+            "eBook Conversion (ePub)",
+            "ISBN Assignment",
+            "Copyright Registration Guidance",
+            "Distribution on 1 Major Retailer",
+            "Author Dashboard Access",
+            "Email Support",
         ],
     },
     {
@@ -88,19 +90,21 @@ const PLANS: Plan[] = [
         accent: "#f0a030",
         band: "rgba(253, 239, 216, 0.8)",
         features: [
-            "Comprehensive 5-Stage Publishing Service",
-            "Dedicated CMS / Author Dashboard Support",
-            "8 High-Resolution Stock Images",
-            "3 Custom Promotional Banner Designs",
-            "1 Interactive eBook Slider Banner",
-            "FREE Search Engine Friendly Metadata Setup",
-            "Complete Industry-Standard Formatting",
-            "Fully Mobile-Responsive Author Platform",
-            "48 to 72 Hours Turnaround Time",
+            "Everything in Starter",
+            "Copyediting (up to 60,000 words)",
+            "Custom Cover Design (2 concepts)",
+            "Paperback & Hardcover Formatting",
+            "eBook Conversion (ePub & Kindle)",
+            "Up to 5 Interior Illustrations",
+            "Author Bio & Book Description",
+            "Global Distribution to Major Retailers",
+            "Amazon Author Page Setup",
+            "2 Rounds of Revisions",
+            "Dedicated Project Manager",
         ],
     },
     {
-        name: "Enterprise Author Package",
+        name: "Complete Publishing Package",
         tagline: "Best Value for Money Guaranteed!",
         icon: "premium",
         price: 449,
@@ -109,15 +113,17 @@ const PLANS: Plan[] = [
         accent: "#d64b3f",
         band: "rgba(250, 228, 226, 0.8)",
         features: [
-            "Complete 8-to-10 Chapter & Book Suite",
-            "Conceptual and Dynamic Publishing Layout",
-            "Online Royalty & Payment Integration",
-            "Integrated Online Book Launch & Booking Tool",
-            "Advanced Content Management System",
-            "Fully Mobile-Responsive Author Platform",
-            "Custom Submission & Inquiry Forms",
-            "Advanced Reader Lead-Capturing Funnels",
-            "Striking Visual & Typography Hover Effects",
+            "Everything in Professional",
+            "Developmental Editing",
+            "Premium Cover Design (3 concepts)",
+            "Audiobook Production Support",
+            "Up to 15 Interior Illustrations",
+            "One-Page Author Website",
+            "Social Media Launch Kit",
+            "30-Second Book Trailer Video",
+            "Press Release Distribution",
+            "Unlimited Revisions",
+            "Priority Support",
         ],
     },
 ];
@@ -146,6 +152,9 @@ function CountUp({ value }: { value: number }) {
     return <span ref={ref}>{display}</span>;
 }
 
+/* ---------- Scrollable feature list ----------
+   The native scrollbar is hidden (it looks different on every OS and is invisible on many laptops),
+   and a custom coloured track + thumb on the right always shows the scroll position. */
 function FeatureList({ plan }: { plan: Plan }) {
     const listRef = useRef<HTMLUListElement>(null);
     const [thumb, setThumb] = useState({ size: 100, top: 0 });
@@ -227,6 +236,7 @@ const cardVariants: Variants = {
 };
 
 function PlanCard({ plan }: { plan: Plan }) {
+    const { openLeadModalForPlan } = useLeadModal();
     return (
         <motion.article
             variants={cardVariants}
@@ -234,8 +244,10 @@ function PlanCard({ plan }: { plan: Plan }) {
             transition={{ type: "spring", stiffness: 260, damping: 22 }}
             className="relative flex flex-col overflow-hidden rounded-xl border border-white/70 bg-white/45 shadow-[0_18px_40px_-18px_rgba(77,55,96,0.45)] backdrop-blur-xl"
         >
+            {/* glass shine */}
             <span className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-white/25 to-transparent" />
 
+            {/* Header */}
             <div
                 className="relative flex min-h-[112px] items-center gap-4 px-5 py-5 pr-16 2xl:min-h-[128px] 2xl:px-7 2xl:py-6"
                 style={{ backgroundImage: "linear-gradient(90deg, rgba(164,118,191,0.95) 0%, rgba(77,55,96,0.95) 100%)" }}
@@ -266,30 +278,34 @@ function PlanCard({ plan }: { plan: Plan }) {
                         <CountUp value={plan.price} />
                     </span>
                     <span className="flex flex-col pt-1">
-                        <span className="font-body text-[16px] font-bold text-red-600 line-through decoration-2">${plan.oldPrice.toLocaleString()}</span>
+                        <span className="font-body text-[16px] font-bold text-red-600 line-through decoration-2">${plan.oldPrice}</span>
                         <span className="font-body text-[11px] font-semibold text-neutral-500">Only</span>
                     </span>
                 </div>
             </div>
 
+            {/* Features (scrollable) */}
             <div className="border-t border-white/60 pt-5">
                 <FeatureList plan={plan} />
             </div>
 
+            {/* CTA */}
             <div className="flex justify-center px-6 pb-7 pt-6">
-                <motion.a
-                    href="#get-started"
+                <motion.button
+                    type="button"
+                    onClick={() => openLeadModalForPlan({ name: plan.name, price: plan.price })}
                     className="bg-brand-gradient inline-flex min-w-[140px] justify-center px-8 py-2.5 font-body text-[15px] font-semibold text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] 2xl:text-[17px]"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.96 }}
                 >
                     Get Started
-                </motion.a>
+                </motion.button>
             </div>
         </motion.article>
     );
 }
 
+/* ---------- Section ---------- */
 export default function PricingPlans() {
     return (
         <section id="pricing" className="relative isolate overflow-hidden bg-[#fbf9fe] py-20 lg:py-28">
@@ -305,7 +321,7 @@ export default function PricingPlans() {
                 >
                     <p className="font-body text-[14px] text-ink 2xl:text-[16px]">Pricing &amp; Packages</p>
                     <h2 className="mt-1 font-heading text-[32px] leading-[1.15] text-[#3a3a3a] sm:text-[40px] xl:text-[48px] 2xl:text-[56px]">
-                        Choose the Plan Built For Your Author Goals
+                        Choose The Plan Built For Your Goals.
                     </h2>
                 </motion.div>
 

@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "reac
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { EASE } from "../motion";
 import { CONTACT } from "../Footer";
+import { submitLead, withHeading } from "../../lib/submitLead";
 
 /* ---------- Form ---------- */
 type Fields = { name: string; email: string; phone: string; subject: string; message: string };
@@ -121,17 +122,115 @@ const INFO = [
     },
 ];
 
+/* ---------- Thank-you card (shown after a successful submit) ---------- */
+const BURST = Array.from({ length: 14 }, (_, i) => {
+    const angle = (i / 14) * Math.PI * 2;
+    const distance = 70 + (i % 3) * 18;
+    return { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance, light: i % 2 === 0 };
+});
+
+function ThankYou({ onReset }: { onReset: () => void }) {
+    return (
+        <motion.div
+            className="relative mt-7 overflow-hidden rounded-2xl border border-brand-light/30 bg-white px-6 py-12 text-center shadow-[0_20px_50px_-24px_rgba(77,55,96,0.5)] sm:px-10"
+            initial={{ opacity: 0, y: 24, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -16, scale: 0.98 }}
+            transition={{ duration: 0.5, ease: EASE }}
+            role="status"
+            aria-live="polite"
+        >
+            {/* soft background glow */}
+            <span className="pointer-events-none absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-brand-light/20 blur-3xl" />
+
+            {/* icon area */}
+            <div className="relative mx-auto h-20 w-20">
+                {/* confetti burst */}
+                {BURST.map((p, i) => (
+                    <motion.span
+                        key={i}
+                        aria-hidden="true"
+                        className="absolute left-1/2 top-1/2 -ml-1 -mt-1 h-2 w-2 rounded-full"
+                        style={{ backgroundColor: p.light ? "var(--color-brand-light)" : "var(--color-brand-dark)" }}
+                        initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
+                        animate={{ x: p.x, y: p.y, scale: [0, 1.3, 0.6], opacity: [1, 1, 0] }}
+                        transition={{ duration: 1.1, delay: 0.35, ease: "easeOut" }}
+                    />
+                ))}
+
+                {/* pulsing rings */}
+                {[0, 1].map((ring) => (
+                    <motion.span
+                        key={ring}
+                        aria-hidden="true"
+                        className="absolute inset-0 rounded-full border-2 border-brand-light"
+                        initial={{ scale: 1, opacity: 0.6 }}
+                        animate={{ scale: 1.9, opacity: 0 }}
+                        transition={{ duration: 1.6, delay: 0.5 + ring * 0.4, repeat: 2, ease: "easeOut" }}
+                    />
+                ))}
+
+                {/* check circle */}
+                <motion.div
+                    className="bg-brand-gradient relative flex h-20 w-20 items-center justify-center rounded-full text-white shadow-[0_12px_28px_-10px_rgba(77,55,96,0.8)]"
+                    initial={{ scale: 0, rotate: -45 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: "spring", stiffness: 220, damping: 14, delay: 0.1 }}
+                >
+                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <motion.path
+                            d="M5 12.5l4.5 4.5L19 7.5"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                            transition={{ duration: 0.55, delay: 0.4, ease: "easeOut" }}
+                        />
+                    </svg>
+                </motion.div>
+            </div>
+
+            <motion.h3
+                className="relative mt-7 font-heading text-[28px] leading-tight text-[#2c2c2c] 2xl:text-[34px]"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6, ease: EASE }}
+            >
+                Thank You for Reaching Out!
+            </motion.h3>
+            <motion.p
+                className="relative mx-auto mt-3 max-w-[420px] font-body text-[15px] leading-relaxed text-neutral-600 2xl:text-[17px]"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.75, ease: EASE }}
+            >
+                Your message is on its way to our publishing team. A specialist will get back to you within one business day.
+            </motion.p>
+            <motion.button
+                type="button"
+                onClick={onReset}
+                className="relative mt-7 border border-brand-light bg-white px-7 py-2.5 font-body text-[15px] font-semibold text-ink transition-colors hover:bg-brand-light/10 2xl:text-[17px]"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.9, ease: EASE }}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+            >
+                Send Another Message
+            </motion.button>
+        </motion.div>
+    );
+}
+
 /* ---------- Section ---------- */
 export default function ContactSection() {
     const [fields, setFields] = useState<Fields>(EMPTY);
     const [errors, setErrors] = useState<Errors>({});
-    const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+    const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
     const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFields((f) => ({ ...f, [name]: value }));
         if (errors[name as keyof Fields]) setErrors((er) => ({ ...er, [name]: undefined }));
-        if (status === "sent") setStatus("idle");
+        if (status === "sent" || status === "error") setStatus("idle");
     };
 
     const onSubmit = async (e: FormEvent) => {
@@ -141,11 +240,22 @@ export default function ContactSection() {
         if (Object.keys(found).length) return;
 
         setStatus("sending");
-        // TODO: send `fields` to your backend / Formspree / EmailJS here, e.g.
-        // await fetch("https://formspree.io/f/your-id", { method: "POST", body: JSON.stringify(fields), headers: { "Content-Type": "application/json" } });
-        await new Promise((r) => setTimeout(r, 900));
-        setStatus("sent");
-        setFields(EMPTY);
+        try {
+            // the API has no "subject" field, so the subject goes on top of the message as a heading
+            const subject = fields.subject.trim();
+            const message = subject ? withHeading(`Subject: ${subject}`, fields.message) : fields.message.trim();
+            await submitLead({
+                name: fields.name.trim(),
+                email: fields.email.trim(),
+                phone_number: fields.phone.trim(),
+                message,
+            });
+            setStatus("sent");
+            setFields(EMPTY);
+        } catch (err) {
+            console.error(err);
+            setStatus("error");
+        }
     };
 
     const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(CONTACT.address)}&z=14&output=embed`;
@@ -177,75 +287,82 @@ export default function ContactSection() {
                             readers worldwide.
                         </motion.p>
 
-                        <motion.form
-                            onSubmit={onSubmit}
-                            noValidate
-                            className="mt-7 grid gap-4 sm:grid-cols-2 sm:gap-x-5"
-                            variants={formVariants}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true, amount: 0.2 }}
-                        >
-                            <Field name="name" label="Your Full Name" value={fields.name} error={errors.name} onChange={onChange} />
-                            <Field name="email" label="Email Address" type="email" value={fields.email} error={errors.email} onChange={onChange} />
-                            <Field name="phone" label="Phone Number" type="tel" value={fields.phone} error={errors.phone} onChange={onChange} />
-                            <Field name="subject" label="Subject / Book Title" value={fields.subject} onChange={onChange} />
-                            <Field
-                                name="message"
-                                label="Tell us about your manuscript or inquiry..."
-                                textarea
-                                value={fields.message}
-                                error={errors.message}
-                                onChange={onChange}
-                                className="sm:col-span-2"
-                            />
-
-                            <motion.div variants={fieldVariants} className="sm:col-span-2">
-                                <motion.button
-                                    type="submit"
-                                    disabled={status === "sending"}
-                                    className="bg-brand-gradient relative w-full overflow-hidden py-3.5 font-body text-[15px] font-semibold text-white shadow-[0_8px_20px_-8px_rgba(77,55,96,0.7)] disabled:cursor-wait 2xl:py-4 2xl:text-[17px]"
-                                    whileHover={{ scale: status === "sending" ? 1 : 1.015 }}
-                                    whileTap={{ scale: 0.98 }}
+                        <AnimatePresence mode="wait">
+                            {status === "sent" ? (
+                                <ThankYou key="thanks" onReset={() => setStatus("idle")} />
+                            ) : (
+                                <motion.form
+                                    key="form"
+                                    exit={{ opacity: 0, y: -16, transition: { duration: 0.3 } }}
+                                    onSubmit={onSubmit}
+                                    noValidate
+                                    className="mt-7 grid gap-4 sm:grid-cols-2 sm:gap-x-5"
+                                    variants={formVariants}
+                                    initial="hidden"
+                                    whileInView="show"
+                                    viewport={{ once: true, amount: 0.2 }}
                                 >
-                                    <AnimatePresence mode="wait" initial={false}>
-                                        <motion.span
-                                            key={status}
-                                            className="inline-flex items-center gap-2"
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            transition={{ duration: 0.25 }}
-                                        >
-                                            {status === "sending" && (
-                                                <motion.span
-                                                    className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white"
-                                                    animate={{ rotate: 360 }}
-                                                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                                                />
-                                            )}
-                                            {status === "idle" && "Send Message"}
-                                            {status === "sending" && "Sending..."}
-                                            {status === "sent" && "Message Sent ✓"}
-                                        </motion.span>
-                                    </AnimatePresence>
-                                </motion.button>
+                                    <Field name="name" label="Your Full Name" value={fields.name} error={errors.name} onChange={onChange} />
+                                    <Field name="email" label="Email Address" type="email" value={fields.email} error={errors.email} onChange={onChange} />
+                                    <Field name="phone" label="Phone Number" type="tel" value={fields.phone} error={errors.phone} onChange={onChange} />
+                                    <Field name="subject" label="Subject / Book Title" value={fields.subject} onChange={onChange} />
+                                    <Field
+                                        name="message"
+                                        label="Tell us about your manuscript or inquiry..."
+                                        textarea
+                                        value={fields.message}
+                                        error={errors.message}
+                                        onChange={onChange}
+                                        className="sm:col-span-2"
+                                    />
 
-                                <AnimatePresence>
-                                    {status === "sent" && (
-                                        <motion.p
-                                            role="status"
-                                            initial={{ opacity: 0, y: -6 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0 }}
-                                            className="mt-3 font-body text-[14px] text-brand-dark"
+                                    <motion.div variants={fieldVariants} className="sm:col-span-2">
+                                        <motion.button
+                                            type="submit"
+                                            disabled={status === "sending"}
+                                            className="bg-brand-gradient relative w-full overflow-hidden py-3.5 font-body text-[15px] font-semibold text-white shadow-[0_8px_20px_-8px_rgba(77,55,96,0.7)] disabled:cursor-wait 2xl:py-4 2xl:text-[17px]"
+                                            whileHover={{ scale: status === "sending" ? 1 : 1.015 }}
+                                            whileTap={{ scale: 0.98 }}
                                         >
-                                            Thanks for reaching out! We'll get back to you soon.
-                                        </motion.p>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
-                        </motion.form>
+                                            <AnimatePresence mode="wait" initial={false}>
+                                                <motion.span
+                                                    key={status}
+                                                    className="inline-flex items-center gap-2"
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: -10 }}
+                                                    transition={{ duration: 0.25 }}
+                                                >
+                                                    {status === "sending" && (
+                                                        <motion.span
+                                                            className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white"
+                                                            animate={{ rotate: 360 }}
+                                                            transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                                                        />
+                                                    )}
+                                                    {(status === "idle" || status === "error") && "Send Message"}
+                                                    {status === "sending" && "Sending..."}
+                                                </motion.span>
+                                            </AnimatePresence>
+                                        </motion.button>
+
+                                        <AnimatePresence>
+                                            {status === "error" && (
+                                                <motion.p
+                                                    role="alert"
+                                                    initial={{ opacity: 0, y: -6 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0 }}
+                                                    className="mt-3 font-body text-[14px] text-red-600"
+                                                >
+                                                    Sorry, your message couldn't be sent. Please try again, or email us at {CONTACT.email}.
+                                                </motion.p>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+                                </motion.form>
+                            )}
+                        </AnimatePresence>
                     </div>
 
                     {/* Map with offset purple block */}

@@ -12,7 +12,7 @@ const AVATARS = [
     { src: "/images/authors/author8.png", left: "85%", top: "80%", size: 52 },
 ];
 
-const QUOTE_AUTHOR_IMAGE = "/images/authors/maya-angelou.png";
+const QUOTE_AUTHOR_IMAGE = "/images/authors/maya-angelou.jpg";
 
 export default function DidYouKnow() {
     return (

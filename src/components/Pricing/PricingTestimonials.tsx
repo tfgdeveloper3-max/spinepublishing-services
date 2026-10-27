@@ -8,75 +8,39 @@ const TESTIMONIALS: Testimonial[] = [
     {
         name: "Gabriel Vance",
         role: "Starter Package",
-        image: "/images/testimonials/client1.png",
+        image: "/images/testimonials/Gabriel-Vance.png",
         text: "At just $199, the Starter package gave me everything I needed to get my book off the ground. SpinePublishing delivered incredible value with zero hidden fees.",
     },
     {
         name: "Chloe Davenport",
         role: "Starter Package",
-        image: "/images/testimonials/client2.png",
+        image: "/images/testimonials/Chloe-Davenport.png",
         text: "I was working on a tight budget for my debut novella. SpinePublishing's Starter tier was affordable, transparent, and packed with essential features like formatting and cover concepts.",
     },
     {
         name: "Nathan Brooks",
         role: "Starter Package",
-        image: "/images/testimonials/client3.png",
+        image: "/images/testimonials/Nathan-Brooks.png",
         text: "The 70% off discount on the Starter package made professional publishing accessible for me as a student writer. Absolutely worth every penny!",
     },
     {
         name: "Fiona Gallagher",
         role: "Starter Package",
-        image: "/images/testimonials/client4.png",
+        image: "/images/testimonials/Fiona-Gallagher.png",
         text: "Getting social media setups, custom design concepts, and file formatting for under $200 blew my mind. SpinePublishing's pricing is unbeatable.",
     },
     {
         name: "Lucas Moretti",
         role: "Professional Package",
-        image: "/images/testimonials/client5.png",
+        image: "/images/testimonials/Lucas-Moretti.png",
         text: "Choosing the Professional package was the best decision for my non-book project. The CMS support and multiple banner designs offered unmatched return on investment.",
     },
     {
         name: "Valerie Scott",
         role: "Professional Package",
-        image: "/images/testimonials/client6.png",
+        image: "/images/testimonials/Valerie-Scott.png",
         text: "I needed robust features without paying thousands to traditional gatekeepers. SpinePublishing's Professional tier hit the sweet spot of high quality and fair pricing.",
-    },
-    {
-        name: "Oliver Reed",
-        role: "Professional Package",
-        image: "/images/testimonials/client7.png",
-        text: "The pricing breakdown was crystal clear from day one. No unexpected invoices or surprise costs — just honest, value-driven publishing support.",
-    },
-    {
-        name: "Danielle King",
-        role: "Professional Package",
-        image: "/images/testimonials/client8.png",
-        text: "With mobile responsiveness, custom stock images, and fast turnaround times included in the Professional plan, SpinePublishing gives authors maximum value.",
-    },
-    {
-        name: "Harrison Cole",
-        role: "Enterprise Author Package",
-        image: "/images/testimonials/client9.png",
-        text: "The Enterprise package gave my book launch the high-end corporate feel it needed. Online payment integration and lead-capturing funnels worth thousands for a fraction of the cost.",
-    },
-    {
-        name: "Rebecca Torres",
-        role: "Enterprise Author Package",
-        image: "/images/testimonials/client10.png",
-        text: "When you look at what's included — booking tools, dynamic layouts, and custom author platforms — the Enterprise pricing tier offers incredible enterprise-grade value.",
-    },
-    {
-        name: "Timothy Hayes",
-        role: "Enterprise Author Package",
-        image: "/images/testimonials/client11.png",
-        text: "SpinePublishing's transparent tier pricing allowed me to scale my author business professionally while keeping my upfront investment completely manageable.",
-    },
-    {
-        name: "Angela Wu",
-        role: "Enterprise Author Package",
-        image: "/images/testimonials/client12.png",
-        text: "The discount pricing on the Enterprise package saved me over a thousand dollars while delivering top-tier website and publishing tools. Truly exceptional!",
-    },
+    }
 ];
 
 const AUTOPLAY_MS = 6000;

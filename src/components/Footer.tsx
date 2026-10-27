@@ -19,10 +19,10 @@ const SOCIALS = [
 ];
 
 export const CONTACT = {
-    phone: "+1 (800) 555-SPINE / +1 800 555 7746",
-    phoneTel: "+18005557746",
-    email: "support@spinepublishing.com",
-    address: "100 Literary Way, Suite 500, New York, NY 10001",
+    phone: "(728) 728-7735",
+    phoneTel: "+17287287735",
+    email: "support@spinepublishingservices.com",
+    address: "1540 S W 8th Street, Boynton Beach, FL 33426",
 };
 
 function IconWrap({ children }: { children: ReactNode }) {
@@ -95,7 +95,7 @@ export default function Footer() {
                 {/* Brand */}
                 <motion.div variants={colVariants}>
                     <Link to="/" aria-label="Spine Publishing Services home" className="inline-block">
-                        <img src={LOGO_SRC} alt="Spine Publishing Services" className="h-12 w-auto object-contain 2xl:h-14" />
+                        <img src={LOGO_SRC} alt="Spine Publishing Services" className="h-16 w-auto object-contain lg:h-[72px] 2xl:h-20" />
                     </Link>
                     <p className={`mt-5 max-w-[320px] ${textCls}`}>
                         Transforming manuscripts into global bestsellers with end-to-end publishing, design, and marketing support

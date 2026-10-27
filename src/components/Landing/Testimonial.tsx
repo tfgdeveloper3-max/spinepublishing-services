@@ -8,75 +8,39 @@ const TESTIMONIALS: Testimonial[] = [
     {
         name: "Marcus Vance",
         role: "Fantasy Author",
-        image: "/images/testimonials/client1.png",
+        image: "/images/testimonials/Marcus-Vance.png",
         text: "Spine Publishing Services made the entire self-publishing process effortless. The cover design exceeded my expectations, and my book was live across all global retailers in under three weeks!",
     },
     {
         name: "Elena Rostova",
         role: "Memoirist & Speaker",
-        image: "/images/testimonials/client2.png",
+        image: "/images/testimonials/Elena-Rostova.png",
         text: "Working with Spine Publishing Services gave me complete creative control without the headaches of technical formatting. Their team supported me at every step!",
     },
     {
         name: "Dr. Arthur Pendelton",
         role: "Non-Fiction & Business Writer",
-        image: "/images/testimonials/client3.png",
+        image: "/images/testimonials/Dr-ArthurPendelton.png",
         text: "As a first-time author, I was overwhelmed by traditional publishing requirements. Spine Publishing Services simplified everything with transparent pricing and top-notch editing.",
     },
     {
         name: "Sarah Jenkins",
         role: "Romance Novelist",
-        image: "/images/testimonials/client4.png",
+        image: "/images/testimonials/Sarah-Jenkins.png",
         text: "The AI editing tools paired with human polish gave my book the professional sheen it needed. Sales have been incredible since the launch!",
     },
     {
         name: "David K. Thorne",
         role: "Sci-Fi Novelist",
-        image: "/images/testimonials/client5.png",
+        image: "/images/testimonials/David-Thorne.png",
         text: "The distribution network at Spine Publishing Services is unmatched. Seeing my book available on Amazon, Barnes & Noble, and international platforms was a dream come true.",
     },
     {
         name: "Amara Okafor",
         role: "Children's Book Author",
-        image: "/images/testimonials/client6.png",
+        image: "/images/testimonials/Amara-Okafor.png",
         text: "The layout and formatting tools captured the exact aesthetic I envisioned for my illustrated book. I couldn't have asked for a better publishing partner!",
-    },
-    {
-        name: "Liam O'Connor",
-        role: "Mystery & Thriller Author",
-        image: "/images/testimonials/client7.png",
-        text: "Spine Publishing Services provided expert guidance from day one. Having a dedicated project manager meant my questions were always answered immediately.",
-    },
-    {
-        name: "Sophia Martinez",
-        role: "Historical Fiction Author",
-        image: "/images/testimonials/client8.png",
-        text: "I retained 100% of my rights while enjoying traditional publishing quality. Spine Publishing Services is truly a game-changer for indie authors.",
-    },
-    {
-        name: "Robert Chen",
-        role: "Self-Help & Mindset Author",
-        image: "/images/testimonials/client9.png",
-        text: "The automated ad setup and marketing suite helped me reach my exact target readers immediately after launching. Highly recommended!",
-    },
-    {
-        name: "Chloe Bennett",
-        role: "Young Adult Author",
-        image: "/images/testimonials/client10.png",
-        text: "From my raw draft to the final print-on-demand copies, Spine Publishing Services handled every detail with extreme precision and care.",
-    },
-    {
-        name: "Daniel Sterling",
-        role: "Poetry & Essays Author",
-        image: "/images/testimonials/client11.png",
-        text: "Formatting poetry can be a nightmare, but Spine Publishing Services made the interior layout look elegant and flawless. Truly grateful for their expertise.",
-    },
-    {
-        name: "Jessica Taylor",
-        role: "Biographer",
-        image: "/images/testimonials/client12.png",
-        text: "Spine Publishing Services took the fear out of publishing. Their platform is intuitive, transparent, and built to empower writers everywhere.",
-    },
+    }
 ];
 
 const AUTOPLAY_MS = 6000;

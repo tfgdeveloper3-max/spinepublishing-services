@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { Link, NavLink } from "react-router-dom";
 import { EASE } from "./motion";
+import { useLeadModal } from "./LeadModal";
 
 type NavItem = { label: string; to: string; isHash?: boolean };
 
@@ -10,6 +11,7 @@ const NAV_LINKS: NavItem[] = [
     { label: "About", to: "/about" },
     { label: "Services", to: "/services" },
     { label: "Pricing", to: "/pricing" },
+    { label: "Reviews", to: "/reviews" },
     { label: "Contact", to: "/contact" },
 ];
 
@@ -43,6 +45,7 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const headerRef = useRef<HTMLElement>(null);
     const [spacer, setSpacer] = useState(96);
+    const { openLeadModal } = useLeadModal();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -70,8 +73,8 @@ export default function Navbar() {
                 ref={headerRef}
                 id="site-header"
                 className={`animate__animated animate__fadeInDown fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color,backdrop-filter] duration-500 ${glass
-                        ? "border-b border-white/50 bg-white/55 shadow-[0_8px_30px_-12px_rgba(77,55,96,0.35)] backdrop-blur-xl backdrop-saturate-150"
-                        : "border-b border-transparent bg-transparent"
+                    ? "border-b border-white/50 bg-white/55 shadow-[0_8px_30px_-12px_rgba(77,55,96,0.35)] backdrop-blur-xl backdrop-saturate-150"
+                    : "border-b border-transparent bg-transparent"
                     }`}
             >
                 <nav
@@ -81,8 +84,8 @@ export default function Navbar() {
                     <Link to="/" aria-label="Spine Publishing home" className="shrink-0">
                         <img
                             src={LOGO_SRC}
-                            alt="Spine Publishing"
-                            className={`w-auto object-contain transition-[height] duration-500 ${scrolled ? "h-11 lg:h-12 2xl:h-14" : "h-12 lg:h-13 2xl:h-15"
+                            alt="Spine Publishing Services"
+                            className={`w-auto max-w-[220px] object-contain transition-[height] duration-500 sm:max-w-none ${scrolled ? "h-14 lg:h-16 2xl:h-[68px]" : "h-16 lg:h-[76px] 2xl:h-[84px]"
                                 }`}
                         />
                     </Link>
@@ -115,14 +118,15 @@ export default function Navbar() {
                     </motion.ul>
 
                     {/* Desktop CTA */}
-                    <motion.a
-                        href="#get-started"
+                    <motion.button
+                        type="button"
+                        onClick={openLeadModal}
                         className="bg-brand-gradient hidden px-9 py-2 font-body text-[16px] text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] md:inline-flex lg:px-10 lg:py-2.5 lg:text-[17px]"
                         whileHover={{ scale: 1.04, boxShadow: "0 10px 24px -6px rgba(77,55,96,0.7)" }}
                         whileTap={{ scale: 0.97 }}
                     >
                         Get Started
-                    </motion.a>
+                    </motion.button>
 
                     {/* Mobile toggle */}
                     <button
@@ -186,13 +190,16 @@ export default function Navbar() {
                                     </li>
                                 ))}
                                 <li className="pt-2">
-                                    <a
-                                        href="#get-started"
-                                        onClick={() => setOpen(false)}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setOpen(false);
+                                            openLeadModal();
+                                        }}
                                         className="bg-brand-gradient inline-flex px-8 py-2.5 font-body text-white"
                                     >
                                         Get Started
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </motion.div>

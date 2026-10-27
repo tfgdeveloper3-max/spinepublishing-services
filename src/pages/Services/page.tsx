@@ -1,10 +1,10 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import PageHero from "@/components/About/AboutHero";
 import ServicesGrid from "@/components/Services/ServicesGrid";
 import FAQ from "@/components/Services/FAQ";
 import ServicesTestimonials from "@/components/Services/ServicesTestimonial";
 import PartnersStrip from "@/components/PartnerStrip";
+import PageHero from "@/components/PageHero";
 
 
 export default function ServicesPage() {

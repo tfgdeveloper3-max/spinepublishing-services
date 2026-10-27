@@ -2,144 +2,175 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, animate, motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { EASE } from "../motion";
 import GlowBackdrop from "../GlowBackdrop";
+import { useLeadModal } from "../LeadModal";
 
-type Category = "Editing" | "Cover Design" | "Publishing" | "Marketing";
+type Category = "Packages" | "Editing" | "Formatting" | "Cover Design" | "Publishing";
 
 export type Review = {
     name: string;
-    role: string; 
-    image: string; 
+    role: string;
+    image: string;
     rating: 1 | 2 | 3 | 4 | 5;
-    title: string;
+    title?: string;
     text: string;
     category: Category;
-    date: string; 
+    date?: string;
 };
 
+// rating: set each one to the star rating the author actually gave
 export const REVIEWS: Review[] = [
+    // ---------- Packages ----------
     {
-        name: "Perin Rames",
-        role: "Author of The Quiet Harbor",
-        image: "/images/reviews/review1.png",
+        name: "Gabriel Vance",
+        role: "Starter Package",
+        image: "/images/testimonials/Gabriel-Vance.png",
         rating: 5,
-        title: "Turned my draft into a real book",
-        text: "I came in with a rough manuscript and a lot of doubts. The editing team was thorough, kind, and fast. My book reads so much better now, and I still recognize my own voice in every chapter.",
-        category: "Editing",
-        date: "September 2026",
+        category: "Packages",
+        text: "At just $199, the Starter package gave me everything I needed to get my book off the ground. SpinePublishing delivered incredible value with zero hidden fees.",
     },
     {
-        name: "Daniel Brooks",
+        name: "Chloe Davenport",
+        role: "Starter Package",
+        image: "/images/testimonials/Chloe-Davenport.png",
+        rating: 5,
+        category: "Packages",
+        text: "I was working on a tight budget for my debut novella. SpinePublishing's Starter tier was affordable, transparent, and packed with essential features like formatting and cover concepts.",
+    },
+    {
+        name: "Nathan Brooks",
+        role: "Starter Package",
+        image: "/images/testimonials/Nathan-Brooks.png",
+        rating: 5,
+        category: "Packages",
+        text: "The 70% off discount on the Starter package made professional publishing accessible for me as a student writer. Absolutely worth every penny!",
+    },
+    {
+        name: "Fiona Gallagher",
+        role: "Starter Package",
+        image: "/images/testimonials/Fiona-Gallagher.png",
+        rating: 5,
+        category: "Packages",
+        text: "Getting social media setups, custom design concepts, and file formatting for under $200 blew my mind. SpinePublishing's pricing is unbeatable.",
+    },
+    {
+        name: "Lucas Moretti",
+        role: "Professional Package",
+        image: "/images/testimonials/Lucas-Moretti.png",
+        rating: 5,
+        category: "Packages",
+        text: "Choosing the Professional package was the best decision for my non-book project. The CMS support and multiple banner designs offered unmatched return on investment.",
+    },
+    {
+        name: "Valerie Scott",
+        role: "Professional Package",
+        image: "/images/testimonials/Valerie-Scott.png",
+        rating: 5,
+        category: "Packages",
+        text: "I needed robust features without paying thousands to traditional gatekeepers. SpinePublishing's Professional tier hit the sweet spot of high quality and fair pricing.",
+    },
+
+    // ---------- Editing, Formatting, Cover Design ----------
+    {
+        name: "Jonathan Vance",
+        role: "Precision Editing",
+        image: "/images/testimonials/Jonathan-Vance.png",
+        rating: 5,
+        category: "Editing",
+        text: "The editing team at SpinePublishing transformed my rough manuscript into a crisp, captivating story. Their line-by-line feedback eliminated errors while keeping my authentic author voice completely intact.",
+    },
+    {
+        name: "Clara Sterling",
+        role: "Precision Editing",
+        image: "/images/testimonials/Clara-Sterling.png",
+        rating: 5,
+        category: "Editing",
+        text: "I was amazed by the depth of the developmental editing. SpinePublishing pinpointed plot holes I had overlooked for months and gave my narrative the exact flow it needed.",
+    },
+    {
+        name: "Marcus Thorne",
+        role: "Flawless Formatting",
+        image: "/images/testimonials/Marcus-Thorne.png",
+        rating: 5,
+        category: "Formatting",
+        text: "Interior layout used to be my biggest headache, but SpinePublishing handled it effortlessly. Both my eBook and paperback look stunning with clean typography and flawless page breaks.",
+    },
+    {
+        name: "Evelyn Reed",
+        role: "Flawless Formatting",
+        image: "/images/testimonials/Evelyn-Reed.png",
+        rating: 5,
+        category: "Formatting",
+        text: "The real-time formatting preview was incredible. SpinePublishing delivered an interior design that looks like it came straight out of a traditional publishing house.",
+    },
+    {
+        name: "Julian Hayes",
+        role: "High-Impact Cover Design",
+        image: "/images/testimonials/Julian-Hayes.png",
+        rating: 5,
+        category: "Cover Design",
+        text: "My book cover stops scrollers in their tracks! SpinePublishing captured the exact mood and theme of my novel in a visually striking design that constantly gets compliments.",
+    },
+    {
+        name: "Samantha Blake",
+        role: "High-Impact Cover Design",
+        image: "/images/testimonials/Samantha-Blake.png",
+        rating: 5,
+        category: "Cover Design",
+        text: "The cover design team took my vague ideas and turned them into a masterpiece. SpinePublishing created a cover that stands out among top bestsellers in my genre.",
+    },
+
+    // ---------- Publishing ----------
+    {
+        name: "Marcus Vance",
         role: "Fantasy Author",
-        image: "/images/reviews/review2.png",
+        image: "/images/testimonials/Marcus-Vance.png",
         rating: 5,
-        title: "The cover is everything I imagined",
-        text: "The designers understood my world better than I expected. Three concepts, quick revisions, and a final cover readers keep complimenting.",
-        category: "Cover Design",
-        date: "August 2026",
+        category: "Publishing",
+        text: "Spine Publishing Services made the entire self-publishing process effortless. The cover design exceeded my expectations, and my book was live across all global retailers in under three weeks!",
     },
     {
-        name: "Sara Whitfield",
+        name: "Elena Rostova",
+        role: "Memoirist & Speaker",
+        image: "/images/testimonials/Elena-Rostova.png",
+        rating: 5,
+        category: "Publishing",
+        text: "Working with Spine Publishing Services gave me complete creative control without the headaches of technical formatting. Their team supported me at every step!",
+    },
+    {
+        name: "Dr. Arthur Pendelton",
+        role: "Non-Fiction & Business Writer",
+        image: "/images/testimonials/Dr-ArthurPendelton.png",
+        rating: 5,
+        category: "Publishing",
+        text: "As a first-time author, I was overwhelmed by traditional publishing requirements. Spine Publishing Services simplified everything with transparent pricing and top-notch editing.",
+    },
+    {
+        name: "Sarah Jenkins",
+        role: "Romance Novelist",
+        image: "/images/testimonials/Sarah-Jenkins.png",
+        rating: 5,
+        category: "Publishing",
+        text: "The AI editing tools paired with human polish gave my book the professional sheen it needed. Sales have been incredible since the launch!",
+    },
+    {
+        name: "David K. Thorne",
+        role: "Sci-Fi Novelist",
+        image: "/images/testimonials/David-Thorne.png",
+        rating: 5,
+        category: "Publishing",
+        text: "The distribution network at Spine Publishing Services is unmatched. Seeing my book available on Amazon, Barnes & Noble, and international platforms was a dream come true.",
+    },
+    {
+        name: "Amara Okafor",
         role: "Children's Book Author",
-        image: "/images/reviews/review3.png",
+        image: "/images/testimonials/Amara-Okafor.png",
         rating: 5,
-        title: "Guided through every single step",
-        text: "Publishing felt overwhelming until I was assigned a project manager. She explained everything in plain language and kept the whole process on schedule.",
         category: "Publishing",
-        date: "August 2026",
-    },
-    {
-        name: "Michael Chen",
-        role: "Business Coach & Author",
-        image: "/images/reviews/review4.png",
-        rating: 4,
-        title: "Professional and well organized",
-        text: "The dashboard made it easy to review edits and approve the layout. One round of formatting took a little longer than planned, but the team communicated clearly the whole time.",
-        category: "Publishing",
-        date: "July 2026",
-    },
-    {
-        name: "Amelia Grant",
-        role: "Memoir Writer",
-        image: "/images/reviews/review5.png",
-        rating: 5,
-        title: "They treated my story with care",
-        text: "Writing a memoir is personal. The editors polished my writing without changing what it meant, and they were sensitive about the hardest chapters.",
-        category: "Editing",
-        date: "July 2026",
-    },
-    {
-        name: "Jorge Rivera",
-        role: "Leadership Author",
-        image: "/images/reviews/review6.png",
-        rating: 5,
-        title: "My book is now available worldwide",
-        text: "From formatting to distribution, everything was handled for me. Seeing my book listed on multiple stores was an amazing moment.",
-        category: "Publishing",
-        date: "June 2026",
-    },
-    {
-        name: "Hannah Lee",
-        role: "Poet",
-        image: "/images/reviews/review7.png",
-        rating: 5,
-        title: "Beautiful interior layout",
-        text: "Poetry formatting is tricky, and they got every line break right. The print copy looks elegant.",
-        category: "Cover Design",
-        date: "June 2026",
-    },
-    {
-        name: "Omar Siddiqui",
-        role: "Thriller Author",
-        image: "/images/reviews/review8.png",
-        rating: 4,
-        title: "Great launch support",
-        text: "The social media launch kit and press release helped me reach readers I couldn't have reached alone. I'd love even more options for paid ads, but overall a strong campaign.",
-        category: "Marketing",
-        date: "May 2026",
-    },
-    {
-        name: "Grace Thompson",
-        role: "Romance Author",
-        image: "/images/reviews/review9.png",
-        rating: 5,
-        title: "Second book with them, won't be the last",
-        text: "I published my first novel here and came straight back for the second. Same great team, same smooth process, and an even better cover.",
-        category: "Cover Design",
-        date: "May 2026",
-    },
-    {
-        name: "Liam O'Connor",
-        role: "History Author",
-        image: "/images/reviews/review10.png",
-        rating: 5,
-        title: "Meticulous fact-checking and editing",
-        text: "My book has hundreds of dates and names. The copyeditor caught inconsistencies I had missed after years of research.",
-        category: "Editing",
-        date: "April 2026",
-    },
-    {
-        name: "Priya Nair",
-        role: "Self-Help Author",
-        image: "/images/reviews/review11.png",
-        rating: 5,
-        title: "Marketing that actually felt personal",
-        text: "They took the time to understand my audience before planning anything. The book trailer and author page made my launch feel professional.",
-        category: "Marketing",
-        date: "April 2026",
-    },
-    {
-        name: "Ethan Walker",
-        role: "Sci-Fi Author",
-        image: "/images/reviews/review12.png",
-        rating: 5,
-        title: "Smooth from start to finish",
-        text: "Clear pricing, quick replies, and a finished book I'm proud of. I recommend them to every writer friend I have.",
-        category: "Publishing",
-        date: "March 2026",
+        text: "The layout and formatting tools captured the exact aesthetic I envisioned for my illustrated book. I couldn't have asked for a better publishing partner!",
     },
 ];
 
-const FILTERS: ("All" | Category)[] = ["All", "Editing", "Cover Design", "Publishing", "Marketing"];
+const FILTERS: ("All" | Category)[] = ["All", "Packages", "Editing", "Formatting", "Cover Design", "Publishing"];
 const PAGE_SIZE = 6;
 
 /* ---------- Stars ---------- */
@@ -282,8 +313,12 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
                     </span>
                 </div>
 
-                <h3 className="mt-4 font-heading text-[20px] leading-snug text-[#2c2c2c] 2xl:text-[24px]">{review.title}</h3>
-                <p className="mt-3 font-body text-[15px] leading-relaxed text-neutral-600 2xl:text-[17px]">{review.text}</p>
+                {review.title && (
+                    <h3 className="mt-4 font-heading text-[20px] leading-snug text-[#2c2c2c] 2xl:text-[24px]">{review.title}</h3>
+                )}
+                <p className={`${review.title ? "mt-3" : "mt-4"} font-body text-[15px] leading-relaxed text-neutral-600 2xl:text-[17px]`}>
+                    {review.text}
+                </p>
 
                 <div className="mt-6 flex items-center gap-3 border-t border-brand-light/20 pt-5">
                     <img src={review.image} alt="" className="h-11 w-11 shrink-0 rounded-full bg-neutral-200 object-cover 2xl:h-12 2xl:w-12" />
@@ -296,7 +331,9 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
                         </p>
                         <p className="truncate font-body text-[13px] text-neutral-500 2xl:text-[15px]">{review.role}</p>
                     </div>
-                    <span className="shrink-0 font-body text-[12px] text-neutral-400 2xl:text-[14px]">{review.date}</span>
+                    {review.date && (
+                        <span className="shrink-0 font-body text-[12px] text-neutral-400 2xl:text-[14px]">{review.date}</span>
+                    )}
                 </div>
             </div>
         </motion.article>
@@ -307,6 +344,7 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 export default function ReviewsSection() {
     const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
     const [visible, setVisible] = useState(PAGE_SIZE);
+    const { openLeadModal } = useLeadModal();
 
     const filtered = useMemo(
         () => (filter === "All" ? REVIEWS : REVIEWS.filter((r) => r.category === filter)),
@@ -423,14 +461,15 @@ export default function ReviewsSection() {
                         Join the authors who trusted Spine Publishing to bring their books to readers around the world.
                     </p>
                     <div className="relative mt-7 flex flex-wrap justify-center gap-4">
-                        <motion.a
-                            href="#get-started"
+                        <motion.button
+                            type="button"
+                            onClick={openLeadModal}
                             className="bg-white px-8 py-2.5 font-body text-[15px] font-semibold text-brand-dark shadow-lg 2xl:text-[17px]"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.96 }}
                         >
                             Get Started
-                        </motion.a>
+                        </motion.button>
                         <motion.a
                             href="#quote"
                             className="border border-white/70 px-8 py-2.5 font-body text-[15px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10 2xl:text-[17px]"
