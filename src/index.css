@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Triodion";
+    src: url("/fonts/Triodion-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("/fonts/MyriadPro-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("/fonts/MYRIADPRO-REGULAR.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("/fonts/MYRIADPRO-SEMIBOLD.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("/fonts/MYRIADPRO-BOLD.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ---------- Design tokens ---------- */
+@theme {
+    --font-heading: "Triodion", Georgia, "Times New Roman", serif;
+    --font-body: "Myriad Pro", "Segoe UI", Helvetica, Arial, sans-serif;
+
+    --color-brand-light: #a476bf;
+    --color-brand-dark: #4d3760;
+    --color-ink: #1f2b4d;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--font-body);
+        color: var(--color-ink);
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+/* ---------- Brand utilities ---------- */
+@utility bg-brand-gradient {
+    background-image: linear-gradient(90deg, var(--color-brand-light) 0%, var(--color-brand-dark) 100%);
+}
+
+@utility text-brand-gradient {
+    background-image: linear-gradient(90deg, var(--color-brand-light) 0%, var(--color-brand-dark) 140%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Soft lavender page background with the white glow behind the headline */
+@utility bg-hero {
+    background:
+        radial-gradient(ellipse 50% 55% at 22% 52%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(ellipse 45% 50% at 70% 72%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(ellipse 55% 65% at 100% 100%, rgba(196, 160, 240, 0.6) 0%, rgba(196, 160, 240, 0) 70%),
+        linear-gradient(180deg, #ece2fa 0%, #f5effd 45%, #ebdffb 100%);
+}
