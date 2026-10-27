@@ -241,9 +241,9 @@ export default function Footer() {
                 <div className="border-l-2 border-brand-light bg-white/50 px-5 py-4 backdrop-blur-sm">
                     <p className="font-body text-[13px] font-semibold text-black 2xl:text-[15px]">Disclaimer</p>
                     <p className="mt-1 font-body text-[12px] leading-relaxed text-neutral-600 2xl:text-[14px]">
-                        Spine Publishing is an independent book publishing services company. We are not affiliated with, endorsed
-                        by, or sponsored by Amazon, Barnes &amp; Noble, IngramSpark, Kobo, Apple Books, Trustpilot, Clutch, or any
-                        other retailer or platform mentioned on this website. All trademarks, logos, and brand names belong to their
+                        Spine Publishing Services is an independent book publishing services company. We are not affiliated with,
+                        endorsed by, or sponsored by Amazon, Barnes &amp; Noble, IngramSpark, Kobo, Apple Books, Trustpilot, Clutch, or
+                        any other retailer or platform mentioned on this website. All trademarks, logos, and brand names belong to their
                         respective owners and are used for identification purposes only. Book covers shown are examples of client
                         projects. Results such as sales, rankings, and reviews vary by author and are not guaranteed.
                     </p>
@@ -253,7 +253,7 @@ export default function Footer() {
             {/* Copyright */}
             <div className="border-t border-neutral-700/60">
                 <p className="px-6 py-4 text-center font-body text-[14px] text-black 2xl:text-[16px]">
-                    Copyright © 2026 SpinePublishing. All rights reserved.
+                    Copyright © {new Date().getFullYear()} Spine Publishing Services. All rights reserved.
                 </p>
             </div>
         </footer>
