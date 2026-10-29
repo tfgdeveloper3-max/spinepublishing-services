@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import Seo, { SEO } from "../../components/Seo";
 
 export default function NotFoundPage() {
     return (
         <>
+            <Seo {...SEO.notFound} />
             <main className="bg-hero overflow-x-hidden">
                 <Navbar />
                 <section className="flex flex-col items-center px-6 pb-28 pt-16 text-center lg:pt-24">

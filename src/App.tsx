@@ -10,6 +10,8 @@ import NotFoundPage from "./pages/NotFound/page";
 import ReviewsPage from "./pages/Reviews/page";
 import LiveChat from "./components/TawkChat";
 import { LeadModalProvider } from "./components/LeadModal";
+import PrivacyPage from "./pages/Privacy/page";
+import TermsPage from "./pages/Terms/page";
 
 export default function App() {
   return (
@@ -24,6 +26,8 @@ export default function App() {
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/reviews" element={<ReviewsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </LeadModalProvider>

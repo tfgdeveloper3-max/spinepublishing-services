@@ -5,10 +5,12 @@ import PartnersStrip from "@/components/PartnerStrip";
 import PricingTestimonials from "@/components/Pricing/PricingTestimonials";
 import PricingFAQ from "@/components/Pricing/PricingFaq";
 import PageHero from "@/components/PageHero";
+import Seo, { SEO } from "../../components/Seo";
 
 export default function PricingPage() {
     return (
         <>
+            <Seo {...SEO.pricing} />
             <main className="overflow-x-hidden">
                 <div className="bg-hero">
                     <Navbar />

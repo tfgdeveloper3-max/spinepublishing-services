@@ -2,10 +2,12 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import ContactSection from "../../components/Contact/ContactSection";
 import PageHero from "@/components/PageHero";
+import Seo, { SEO } from "../../components/Seo";
 
 export default function ContactPage() {
     return (
         <>
+            <Seo {...SEO.contact} />
             <main className="overflow-x-hidden">
                 <div className="bg-hero">
                     <Navbar />

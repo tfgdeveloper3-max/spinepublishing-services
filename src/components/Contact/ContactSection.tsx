@@ -4,7 +4,6 @@ import { EASE } from "../motion";
 import { CONTACT } from "../Footer";
 import { submitLead, withHeading } from "../../lib/submitLead";
 
-/* ---------- Form ---------- */
 type Fields = { name: string; email: string; phone: string; subject: string; message: string };
 type Errors = Partial<Record<keyof Fields, string>>;
 const EMPTY: Fields = { name: "", email: "", phone: "", subject: "", message: "" };
@@ -241,7 +240,6 @@ export default function ContactSection() {
 
         setStatus("sending");
         try {
-            // the API has no "subject" field, so the subject goes on top of the message as a heading
             const subject = fields.subject.trim();
             const message = subject ? withHeading(`Subject: ${subject}`, fields.message) : fields.message.trim();
             await submitLead({
@@ -258,12 +256,10 @@ export default function ContactSection() {
         }
     };
 
-    const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(CONTACT.address)}&z=14&output=embed`;
-
     return (
         <section id="contact-form" className="bg-white py-20 lg:py-28">
             <div className="mx-auto w-full max-w-[1760px] px-6 md:px-10 xl:px-16 2xl:px-24">
-                {/* ---------- Form + map ---------- */}
+                {/* ---------- Form + image ---------- */}
                 <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-16 2xl:gap-24">
                     <div>
                         <motion.h2
@@ -320,7 +316,7 @@ export default function ContactSection() {
                                         <motion.button
                                             type="submit"
                                             disabled={status === "sending"}
-                                            className="bg-brand-gradient relative w-full overflow-hidden py-3.5 font-body text-[15px] font-semibold text-white shadow-[0_8px_20px_-8px_rgba(77,55,96,0.7)] disabled:cursor-wait 2xl:py-4 2xl:text-[17px]"
+                                            className="bg-brand-gradient relative w-full overflow-hidden py-3.5 btn-primary"
                                             whileHover={{ scale: status === "sending" ? 1 : 1.015 }}
                                             whileTap={{ scale: 0.98 }}
                                         >
@@ -365,7 +361,7 @@ export default function ContactSection() {
                         </AnimatePresence>
                     </div>
 
-                    {/* Map with offset purple block */}
+                    {/* Contact image with offset purple block */}
                     <motion.div
                         className="relative mr-4 mb-4 lg:mr-6 lg:mb-6"
                         initial={{ opacity: 0, x: 60 }}
@@ -383,12 +379,11 @@ export default function ContactSection() {
                             transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
                         />
                         <div className="relative z-10 overflow-hidden rounded-2xl bg-[#e9e6ee] shadow-[0_20px_40px_-20px_rgba(0,0,0,0.4)]">
-                            <iframe
-                                title={`Map showing ${CONTACT.address}`}
-                                src={mapSrc}
+                            <img
+                                src="/images/contact-us.jpg"
+                                alt="Contact Spine Publishing Services Direct"
                                 loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                className="block aspect-[376/360] w-full border-0 grayscale-[35%] transition-[filter] duration-500 hover:grayscale-0 lg:aspect-[376/362]"
+                                className="block aspect-[376/360] w-full border-0 object-cover lg:aspect-[376/362]"
                             />
                         </div>
                     </motion.div>

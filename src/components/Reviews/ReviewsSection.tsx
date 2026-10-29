@@ -3,6 +3,7 @@ import { AnimatePresence, animate, motion, useInView, useReducedMotion, type Var
 import { EASE } from "../motion";
 import GlowBackdrop from "../GlowBackdrop";
 import { useLeadModal } from "../LeadModal";
+import { openLiveChat } from "@/lib/Livechat";
 
 type Category = "Packages" | "Editing" | "Formatting" | "Cover Design" | "Publishing";
 
@@ -464,20 +465,20 @@ export default function ReviewsSection() {
                         <motion.button
                             type="button"
                             onClick={openLeadModal}
-                            className="bg-white px-8 py-2.5 font-body text-[15px] font-semibold text-brand-dark shadow-lg 2xl:text-[17px]"
+                            className="btn-primary"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.96 }}
                         >
                             Get Started
                         </motion.button>
-                        <motion.a
-                            href="#quote"
-                            className="border border-white/70 px-8 py-2.5 font-body text-[15px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10 2xl:text-[17px]"
+                        <motion.button
+                            onClick={() => openLiveChat(openLeadModal)}
+                            className="btn-glass max-md:hidden"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.96 }}
                         >
                             Get a Free Quote
-                        </motion.a>
+                        </motion.button>
                     </div>
                 </motion.div>
             </div>

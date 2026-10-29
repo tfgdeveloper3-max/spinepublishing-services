@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect } from "react";
 
 declare global {
@@ -14,7 +12,9 @@ declare global {
 
 const AUTO_OPEN_ON_LOAD = true;
 
-const TAWK_SRC = "https://embed.tawk.to/6ab6c95db36b4b344430c4ec/1k3d055nf";
+const TAWK_SRC = "https://embed.tawk.to/6ae28094a6f08d347cd1e2f7/1k62cch9g";
+
+const LOAD_DELAY_MS = 4000;
 
 export default function LiveChat() {
     useEffect(() => {
@@ -25,7 +25,6 @@ export default function LiveChat() {
         const run = (fn: () => void) => (loaded ? fn() : queue.push(fn));
 
         window.Tawk_API = window.Tawk_API || {};
-        window.Tawk_LoadStart = new Date();
         const Tawk = window.Tawk_API;
 
         Tawk.customStyle = {
@@ -50,16 +49,17 @@ export default function LiveChat() {
             minimize: () => Tawk.minimize(),
             hide: () => Tawk.hideWidget(),
             show: () => Tawk.showWidget(),
-            set_customer_name: (name: string) =>
-                Tawk.setAttributes({ name }, () => { }),
-            set_customer_email: (email: string) =>
-                Tawk.setAttributes({ email }, () => { }),
+            set_customer_name: (name: string) => Tawk.setAttributes({ name }, () => { }),
+            set_customer_email: (email: string) => Tawk.setAttributes({ email }, () => { }),
         };
 
         window.LiveChatWidget = {
             call: (method: string, ...args: any[]) => {
                 const fn = callMap[method];
-                if (fn) run(() => fn(...args));
+                if (fn) {
+                    run(() => fn(...args));
+                    loadScript(); 
+                }
             },
             on: (event: string, cb: () => void) => {
                 if (event === "ready") run(cb);
@@ -69,19 +69,40 @@ export default function LiveChat() {
         };
 
         window.LC_API = {
-            open_chat_window: () => run(() => Tawk.maximize()),
+            open_chat_window: () => {
+                run(() => Tawk.maximize());
+                loadScript();
+            },
             minimize_chat_window: () => run(() => Tawk.minimize()),
             hide_chat_window: () => run(() => Tawk.hideWidget()),
             chat_window_maximized: () => (loaded ? Tawk.isChatMaximized() : false),
         };
 
-        const s = document.createElement("script");
-        s.id = "tawk-script";
-        s.async = true;
-        s.src = TAWK_SRC;
-        s.charset = "UTF-8";
-        s.setAttribute("crossorigin", "*");
-        document.body.appendChild(s);
+        const events = ["scroll", "pointerdown", "keydown", "touchstart"] as const;
+        let timer = 0;
+
+        function cleanupTriggers() {
+            window.clearTimeout(timer);
+            events.forEach((e) => window.removeEventListener(e, loadScript));
+        }
+
+        function loadScript() {
+            cleanupTriggers();
+            if (document.getElementById("tawk-script")) return;
+            window.Tawk_LoadStart = new Date();
+            const s = document.createElement("script");
+            s.id = "tawk-script";
+            s.async = true;
+            s.src = TAWK_SRC;
+            s.charset = "UTF-8";
+            s.setAttribute("crossorigin", "*");
+            document.body.appendChild(s);
+        }
+
+        timer = window.setTimeout(loadScript, LOAD_DELAY_MS);
+        events.forEach((e) => window.addEventListener(e, loadScript, { once: true, passive: true }));
+
+        return cleanupTriggers;
     }, []);
 
     return null;

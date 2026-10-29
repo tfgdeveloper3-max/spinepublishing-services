@@ -117,16 +117,19 @@ export default function Navbar() {
                         ))}
                     </motion.ul>
 
-                    {/* Desktop CTA */}
-                    <motion.button
+                    <button
                         type="button"
                         onClick={openLeadModal}
-                        className="bg-brand-gradient hidden px-9 py-2 font-body text-[16px] text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] md:inline-flex lg:px-10 lg:py-2.5 lg:text-[17px]"
-                        whileHover={{ scale: 1.04, boxShadow: "0 10px 24px -6px rgba(77,55,96,0.7)" }}
-                        whileTap={{ scale: 0.97 }}
+                        className={`btn-glass relative overflow-hidden max-md:hidden ${scrolled ? "!text-white" : ""}`}
+                        style={{ transition: "transform 0.2s ease, box-shadow 0.2s ease, color 0.5s ease" }}
                     >
-                        Get Started
-                    </motion.button>
+                        <span
+                            aria-hidden="true"
+                            className={`absolute inset-0 rounded-[inherit] transition-opacity duration-500 ${scrolled ? "opacity-100" : "opacity-0"}`}
+                            style={{ background: "linear-gradient(180deg, #ad89e4 0%, #9a72da 100%)" }}
+                        />
+                        <span className="relative">Get Started</span>
+                    </button>
 
                     {/* Mobile toggle */}
                     <button
@@ -196,7 +199,7 @@ export default function Navbar() {
                                             setOpen(false);
                                             openLeadModal();
                                         }}
-                                        className="bg-brand-gradient inline-flex px-8 py-2.5 font-body text-white"
+                                        className="btn-primary"
                                     >
                                         Get Started
                                     </button>

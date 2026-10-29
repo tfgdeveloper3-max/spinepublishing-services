@@ -5,11 +5,12 @@ import FAQ from "@/components/Services/FAQ";
 import ServicesTestimonials from "@/components/Services/ServicesTestimonial";
 import PartnersStrip from "@/components/PartnerStrip";
 import PageHero from "@/components/PageHero";
-
+import Seo, { SEO } from "../../components/Seo";
 
 export default function ServicesPage() {
     return (
         <>
+            <Seo {...SEO.services} />
             <main className="overflow-x-hidden">
                 <div className="bg-hero">
                     <Navbar />

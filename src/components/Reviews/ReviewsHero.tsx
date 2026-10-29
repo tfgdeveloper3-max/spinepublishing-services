@@ -3,6 +3,7 @@ import { animate, motion, useReducedMotion } from "framer-motion";
 import { EASE } from "../motion";
 import { REVIEWS } from "./ReviewsSection";
 import { useLeadModal } from "../LeadModal";
+import { openLiveChat } from "@/lib/Livechat";
 
 const RATING_BADGES = [
     { src: "/images/badges/trustpilot.png", alt: "Rated 4.9 out of 5 on Trustpilot", className: "h-[44px] 2xl:h-[52px]" },
@@ -52,7 +53,6 @@ export default function ReviewsHero() {
     return (
         <section className="relative">
             <div className="mx-auto grid w-full max-w-[1760px] items-center gap-14 px-6 pb-20 pt-8 md:px-10 lg:grid-cols-2 lg:gap-10 lg:pb-24 lg:pt-14 xl:px-16 2xl:px-24 2xl:pt-20">
-                {/* ---------- Left: copy (same style as the home hero) ---------- */}
                 <div>
                     <span
                         className="animate__animated animate__fadeInLeft inline-block border border-brand-light/70 bg-white/40 px-3 py-1 font-body text-[15px] font-light text-neutral-800 sm:text-[18px] 2xl:text-[20px]"
@@ -75,20 +75,20 @@ export default function ReviewsHero() {
                         <motion.button
                             type="button"
                             onClick={openLeadModal}
-                            className="bg-brand-gradient inline-flex min-w-[127px] justify-center px-7 py-2 font-body text-[15px] text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] sm:text-[16px] 2xl:px-9 2xl:py-3 2xl:text-[18px]"
+                            className="btn-primary"
                             whileHover={{ scale: 1.04, boxShadow: "0 10px 24px -6px rgba(77,55,96,0.7)" }}
                             whileTap={{ scale: 0.97 }}
                         >
                             Get Started
                         </motion.button>
-                        <motion.a
-                            href="#quote"
-                            className="inline-flex justify-center border border-brand-light bg-white px-4 py-2 font-body text-[15px] font-semibold text-ink transition-colors duration-300 hover:bg-brand-light/10 sm:text-[16px] 2xl:px-6 2xl:py-3 2xl:text-[18px]"
+                        <motion.button
+                            onClick={() => openLiveChat(openLeadModal)}
+                            className="btn-glass max-md:hidden"
                             whileHover={{ scale: 1.04 }}
                             whileTap={{ scale: 0.97 }}
                         >
                             Get a Free Quote
-                        </motion.a>
+                        </motion.button>
                     </div>
 
                     <div className="animate__animated animate__fadeInUp mt-6" style={{ animationDelay: "0.9s" }}>

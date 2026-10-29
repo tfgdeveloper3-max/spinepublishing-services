@@ -7,10 +7,13 @@ import DidYouKnow from "../../components/DidYouKnow";
 import Portfolio from "../../components/Landing/Portfolio";
 import PartnersStrip from "@/components/PartnerStrip";
 import Testimonials from "@/components/Landing/Testimonial";
+import Seo, { SEO } from "../../components/Seo";
+
 
 export default function HomePage() {
     return (
         <>
+            <Seo {...SEO.home} />
             <main className="overflow-x-hidden">
                 <div className="bg-hero">
                     <Navbar />

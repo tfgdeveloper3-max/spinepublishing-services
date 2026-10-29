@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { motion, type Variants } from "framer-motion";
 import { EASE } from "../motion";
 import { useLeadModal } from "../LeadModal";
+import { openLiveChat } from "@/lib/Livechat";
 
 type PageHeroProps = {
     title: string;
@@ -95,20 +96,20 @@ export default function AboutHero({ title, description, showButtons = true, show
                     >
                         <motion.button
                             onClick={openLeadModal}
-                            className="bg-brand-gradient inline-flex min-w-[127px] justify-center px-8 py-2.5 font-body text-[15px] text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] sm:text-[16px] 2xl:text-[18px]"
+                            className="btn-primary"
                             whileHover={{ scale: 1.04, boxShadow: "0 10px 24px -6px rgba(77,55,96,0.7)" }}
                             whileTap={{ scale: 0.97 }}
                         >
                             Get Started
                         </motion.button>
-                        <motion.a
-                            href="#quote"
-                            className="inline-flex justify-center border border-brand-light bg-white px-4 py-2.5 font-body text-[15px] font-semibold text-ink transition-colors duration-300 hover:bg-brand-light/10 sm:text-[16px] 2xl:text-[18px]"
+                        <motion.button
+                            onClick={() => openLiveChat(openLeadModal)}
+                            className="btn-glass max-md:hidden"
                             whileHover={{ scale: 1.04 }}
                             whileTap={{ scale: 0.97 }}
                         >
                             Get a Free Quote
-                        </motion.a>
+                        </motion.button>
                     </div>
                 )}
 
@@ -123,6 +124,6 @@ export default function AboutHero({ title, description, showButtons = true, show
                     </div>
                 )}
             </div>
-        </section>
+        </section >
     );
 }

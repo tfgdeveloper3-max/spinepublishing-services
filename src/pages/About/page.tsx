@@ -1,5 +1,6 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import Seo, { SEO } from "../../components/Seo";
 import PartnersStrip from "@/components/PartnerStrip";
 import AboutUs from "@/components/About/AboutUs";
 import DidYouKnow from "@/components/DidYouKnow";
@@ -9,6 +10,7 @@ import AboutHero from "@/components/About/AboutHero";
 export default function AboutPage() {
     return (
         <>
+            <Seo {...SEO.about} />
             <main className="overflow-x-hidden">
                 <div className="bg-hero">
                     <Navbar />

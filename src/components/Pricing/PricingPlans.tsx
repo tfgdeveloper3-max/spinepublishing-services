@@ -294,7 +294,7 @@ function PlanCard({ plan }: { plan: Plan }) {
                 <motion.button
                     type="button"
                     onClick={() => openLeadModalForPlan({ name: plan.name, price: plan.price })}
-                    className="bg-brand-gradient inline-flex min-w-[140px] justify-center px-8 py-2.5 font-body text-[15px] font-semibold text-white shadow-[0_6px_18px_-6px_rgba(77,55,96,0.6)] 2xl:text-[17px]"
+                    className="btn-primary"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.96 }}
                 >

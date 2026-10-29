@@ -4,19 +4,22 @@ import { Link } from "react-router-dom";
 import { EASE } from "./motion";
 import { LOGO_SRC } from "./Navbar";
 
+/* ---------- Content ---------- */
 const USEFUL_LINKS = [
     { label: "Home", to: "/" },
-    { label: "About Us", to: "/about" },
-    { label: "Publishing Services", to: "/services" },
-    { label: "Author Success Stories", to: "/#testimonials" },
-    { label: "Contact Us", to: "/contact" },
+    { label: "About", to: "/about" },
+    { label: "Services", to: "/services" },
+    { label: "Projects", to: "/#portfolio" },
+    { label: "Reviews", to: "/reviews" },
+    { label: "Contact us", to: "/contact" },
 ];
 
-const SOCIALS = [
-    { label: "Facebook", href: "https://facebook.com", icon: "/icons/social/facebook.svg" },
-    { label: "X (Twitter)", href: "https://x.com", icon: "/icons/social/x.svg" },
-    { label: "LinkedIn", href: "https://linkedin.com", icon: "/icons/social/linkedin.svg" },
-];
+// Put white social icons in /public/icons/social
+// const SOCIALS = [
+//     { label: "Facebook", href: "https://facebook.com", icon: "/icons/social/facebook.svg" },
+//     { label: "X (Twitter)", href: "https://x.com", icon: "/icons/social/x.svg" },
+//     { label: "LinkedIn", href: "https://linkedin.com", icon: "/icons/social/linkedin.svg" },
+// ];
 
 export const CONTACT = {
     phone: "(728) 728-7735",
@@ -48,6 +51,7 @@ const PinIcon = () => (
     </IconWrap>
 );
 
+/* ---------- Animation ---------- */
 const colsVariants: Variants = {
     hidden: {},
     show: { transition: { staggerChildren: 0.12 } },
@@ -60,6 +64,7 @@ const colVariants: Variants = {
 const headingCls = "font-body text-[18px] font-semibold text-black 2xl:text-[21px]";
 const textCls = "font-body text-[14px] leading-[1.9] text-neutral-700 2xl:text-[16px]";
 
+/* ---------- Footer ---------- */
 export default function Footer() {
     const [email, setEmail] = useState("");
     const [agreed, setAgreed] = useState(true);
@@ -72,6 +77,7 @@ export default function Footer() {
             setStatus("error");
             return;
         }
+        // TODO: send `email` to your newsletter service here
         setStatus("done");
         setEmail("");
     };
@@ -94,15 +100,14 @@ export default function Footer() {
             >
                 {/* Brand */}
                 <motion.div variants={colVariants}>
-                    <Link to="/" aria-label="Spine Publishing Services home" className="inline-block">
-                        <img src={LOGO_SRC} alt="Spine Publishing Services" className="h-16 w-auto object-contain lg:h-[72px] 2xl:h-20" />
+                    <Link to="/" aria-label="Spine Publishing home" className="inline-block">
+                        <img src={LOGO_SRC} alt="Spine Publishing" className="h-16 w-auto object-contain lg:h-[72px] 2xl:h-20" />
                     </Link>
                     <p className={`mt-5 max-w-[320px] ${textCls}`}>
-                        Transforming manuscripts into global bestsellers with end-to-end publishing, design, and marketing support
-                        tailored for authors.
+                        Transforming manuscripts into global bestsellers with end-to-end publishing, design, and marketing support tailored for authors.
                     </p>
                     <div className="mt-6 flex gap-3">
-                        {SOCIALS.map((s) => (
+                        {/* {SOCIALS.map((s) => (
                             <motion.a
                                 key={s.label}
                                 href={s.href}
@@ -115,7 +120,7 @@ export default function Footer() {
                             >
                                 <img src={s.icon} alt="" className="h-4 w-4 object-contain 2xl:h-5 2xl:w-5" />
                             </motion.a>
-                        ))}
+                        ))} */}
                     </div>
                 </motion.div>
 
@@ -159,7 +164,7 @@ export default function Footer() {
 
                 {/* Newsletter */}
                 <motion.div variants={colVariants}>
-                    <h3 className={headingCls}>Stay Inspired</h3>
+                    <h3 className={headingCls}>Newsletter</h3>
                     <form onSubmit={onSubmit} noValidate className="mt-5">
                         <div className="flex shadow-[0_8px_20px_-10px_rgba(77,55,96,0.5)]">
                             <label htmlFor="newsletter-email" className="sr-only">
@@ -173,7 +178,7 @@ export default function Footer() {
                                     setEmail(e.target.value);
                                     if (status !== "idle") setStatus("idle");
                                 }}
-                                placeholder="Enter your email address..."
+                                placeholder="Enter Email:"
                                 className="min-w-0 flex-1 bg-white px-5 py-3 font-body text-[14px] text-ink outline-none placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-brand-light 2xl:text-[16px]"
                             />
                             <motion.button
@@ -204,7 +209,7 @@ export default function Footer() {
                                 )}
                             </span>
                             <span className="font-body text-[13px] leading-snug text-neutral-700 2xl:text-[15px]">
-                                Subscribe to receive exclusive publishing insights, industry trends, and author guides.
+                                I agree to receive publishing tips and updates from Spine Publishing. Unsubscribe anytime.
                             </span>
                         </label>
 
@@ -241,20 +246,31 @@ export default function Footer() {
                 <div className="border-l-2 border-brand-light bg-white/50 px-5 py-4 backdrop-blur-sm">
                     <p className="font-body text-[13px] font-semibold text-black 2xl:text-[15px]">Disclaimer</p>
                     <p className="mt-1 font-body text-[12px] leading-relaxed text-neutral-600 2xl:text-[14px]">
-                        Spine Publishing Services is an independent book publishing services company. We are not affiliated with,
-                        endorsed by, or sponsored by Amazon, Barnes &amp; Noble, IngramSpark, Kobo, Apple Books, Trustpilot, Clutch, or
-                        any other retailer or platform mentioned on this website. All trademarks, logos, and brand names belong to their
+                        Spine Publishing Services is an independent book publishing services company. We are not affiliated with, endorsed
+                        by, or sponsored by Amazon, Barnes &amp; Noble, IngramSpark, Kobo, Apple Books, Trustpilot, Clutch, or any
+                        other retailer or platform mentioned on this website. All trademarks, logos, and brand names belong to their
                         respective owners and are used for identification purposes only. Book covers shown are examples of client
                         projects. Results such as sales, rankings, and reviews vary by author and are not guaranteed.
                     </p>
                 </div>
             </motion.div>
 
-            {/* Copyright */}
+            {/* Copyright + legal links */}
             <div className="border-t border-neutral-700/60">
-                <p className="px-6 py-4 text-center font-body text-[14px] text-black 2xl:text-[16px]">
-                    Copyright © {new Date().getFullYear()} Spine Publishing Services. All rights reserved.
-                </p>
+                <div className="mx-auto flex w-full max-w-[1760px] flex-col items-center justify-between gap-2 px-6 py-4 text-center font-body text-[14px] text-black sm:flex-row md:px-10 xl:px-16 2xl:px-24 2xl:text-[16px]">
+                    <p>Copyright © {new Date().getFullYear()} Spine Publishing Services. All rights reserved.</p>
+                    <nav aria-label="Legal" className="flex items-center gap-5">
+                        <Link to="/privacy" className="hover:text-brand-dark hover:underline">
+                            Privacy Policy
+                        </Link>
+                        <span aria-hidden="true" className="text-neutral-400">
+                            |
+                        </span>
+                        <Link to="/terms" className="hover:text-brand-dark hover:underline">
+                            Terms &amp; Conditions
+                        </Link>
+                    </nav>
+                </div>
             </div>
         </footer>
     );
