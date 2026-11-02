@@ -50,7 +50,7 @@ type Plan = {
     tagline: string;
     icon: keyof typeof ICONS;
     price: number;
-    oldPrice: number;
+    oldPrice?: number; // optional: only shown (struck through) when set
     badge: string;
     accent: string; // dot + scrollbar colour
     band: string; // price band tint (semi-transparent for the glass look)
@@ -59,76 +59,70 @@ type Plan = {
 
 const PLANS: Plan[] = [
     {
-        name: "Starter",
-        tagline: "Best Value for Money Guaranteed!",
+        name: "Essential Publishing",
+        tagline: "An ideal choice for first-time authors seeking professional publishing services and a strong foundation for their book launch.",
         icon: "starter",
-        price: 199,
-        oldPrice: 298,
-        badge: "70% Off",
+        price: 749,
+        badge: "Starter Package",
         accent: "#1f9e86",
         band: "rgba(214, 238, 234, 0.75)",
         features: [
-            "Manuscript Review & Assessment",
-            "Basic Proofreading (up to 30,000 words)",
-            "Standard Cover Design (1 concept)",
-            "Interior Formatting for Paperback",
-            "eBook Conversion (ePub)",
-            "ISBN Assignment",
-            "Copyright Registration Guidance",
-            "Distribution on 1 Major Retailer",
-            "Author Dashboard Access",
-            "Email Support",
-        ],
-    },
-    {
-        name: "Professional",
-        tagline: "Best Value for Money Guaranteed!",
-        icon: "professional",
-        price: 349,
-        oldPrice: 789,
-        badge: "70% Off",
-        accent: "#f0a030",
-        band: "rgba(253, 239, 216, 0.8)",
-        features: [
-            "Everything in Starter",
-            "Copyediting (up to 60,000 words)",
-            "Custom Cover Design (2 concepts)",
-            "Paperback & Hardcover Formatting",
-            "eBook Conversion (ePub & Kindle)",
-            "Up to 5 Interior Illustrations",
-            "Author Bio & Book Description",
-            "Global Distribution to Major Retailers",
-            "Amazon Author Page Setup",
-            "2 Rounds of Revisions",
+            "Professional eBook Cover Design",
+            "Basic Proofreading",
+            "eBook Formatting",
+            "Paperback Formatting",
+            "ISBN Registration Assistance",
+            "Amazon KDP Publishing",
+            "Personalized Author Consultation",
             "Dedicated Project Manager",
         ],
     },
     {
-        name: "Complete Publishing Package",
-        tagline: "Best Value for Money Guaranteed!",
+        name: "Professional Publishing",
+        tagline: "Designed for authors seeking enhanced editorial services, premium book presentation, and expanded distribution across leading publishing platforms.",
+        icon: "professional",
+        price: 1050,
+        badge: "Most Popular",
+        accent: "#f0a030",
+        band: "rgba(253, 239, 216, 0.8)",
+        features: [
+            "All Services Included in Essential Publishing",
+            "Professional Copyediting (within the specified word limit)",
+            "Premium Front, Back, and Spine Cover Design",
+            "eBook, Paperback, and Hardcover Formatting",
+            "ISBN Assignment and Registration Assistance",
+            "Amazon KDP Publishing",
+            "Barnes & Noble Distribution",
+            "Apple Books and Kobo Distribution",
+            "Amazon Author Central Account Setup",
+            "Two Rounds of Revisions",
+        ],
+    },
+    {
+        name: "Global Publishing & Promotion",
+        tagline: "A comprehensive publishing and promotional solution for authors seeking international reach, professional brand development, and dedicated launch support.",
         icon: "premium",
-        price: 449,
-        oldPrice: 1698,
-        badge: "70% Off",
+        price: 1499,
+        badge: "Premium Package",
         accent: "#d64b3f",
         band: "rgba(250, 228, 226, 0.8)",
         features: [
-            "Everything in Professional",
-            "Developmental Editing",
-            "Premium Cover Design (3 concepts)",
-            "Audiobook Production Support",
-            "Up to 15 Interior Illustrations",
-            "One-Page Author Website",
-            "Social Media Launch Kit",
-            "30-Second Book Trailer Video",
-            "Press Release Distribution",
-            "Unlimited Revisions",
-            "Priority Support",
+            "All Services Included in Professional Publishing",
+            "Comprehensive Copyediting (within the specified word limit)",
+            "Premium Custom Book Cover Design",
+            "International Distribution Across Selected Platforms",
+            "Print and eBook Publishing",
+            "Custom Author Website or Landing Page",
+            "Professional Author Branding",
+            "Book Description and Metadata Optimization",
+            "Press Release Distribution Through Specified Outlets",
+            "30-Day Social Media Marketing Campaign",
+            "Dedicated Publishing Manager",
+            "Six Months of Basic Publishing Support",
         ],
     },
 ];
 
-/* ---------- Price that counts up when it scrolls into view ---------- */
 function CountUp({ value }: { value: number }) {
     const ref = useRef<HTMLSpanElement>(null);
     const inView = useInView(ref, { once: true, amount: 0.8 });
@@ -247,9 +241,9 @@ function PlanCard({ plan }: { plan: Plan }) {
             {/* glass shine */}
             <span className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-white/25 to-transparent" />
 
-            {/* Header */}
+            {/* Header (extra right padding keeps the title clear of the ribbon) */}
             <div
-                className="relative flex min-h-[112px] items-center gap-4 px-5 py-5 pr-16 2xl:min-h-[128px] 2xl:px-7 2xl:py-6"
+                className="relative flex min-h-[112px] items-center gap-4 px-5 py-5 pr-24 2xl:min-h-[128px] 2xl:px-7 2xl:py-6 2xl:pr-28"
                 style={{ backgroundImage: "linear-gradient(90deg, rgba(164,118,191,0.95) 0%, rgba(77,55,96,0.95) 100%)" }}
             >
                 <motion.div
@@ -264,9 +258,12 @@ function PlanCard({ plan }: { plan: Plan }) {
                     <p className="mt-1 font-body text-[12px] text-white/90 2xl:text-[14px]">{plan.tagline}</p>
                 </div>
 
-                {/* corner ribbon */}
-                <div className="absolute right-[-42px] top-[16px] w-[150px] rotate-45 bg-black py-1 text-center font-body text-[13px] font-bold text-white shadow-md">
-                    {plan.badge}
+                {/* corner ribbon: a 130px clipping box in the corner; the 200px strip sits ~65px
+                    from the corner along the diagonal, where there is room for the full label */}
+                <div className="pointer-events-none absolute right-0 top-0 z-20 h-[130px] w-[130px] overflow-hidden">
+                    <div className="absolute right-[-54px] top-[34px] w-[200px] rotate-45 bg-black py-1 text-center font-body text-[12px] font-bold text-white shadow-md 2xl:text-[13px]">
+                        {plan.badge}
+                    </div>
                 </div>
             </div>
 
@@ -278,7 +275,9 @@ function PlanCard({ plan }: { plan: Plan }) {
                         <CountUp value={plan.price} />
                     </span>
                     <span className="flex flex-col pt-1">
-                        <span className="font-body text-[16px] font-bold text-red-600 line-through decoration-2">${plan.oldPrice}</span>
+                        {plan.oldPrice !== undefined && (
+                            <span className="font-body text-[16px] font-bold text-red-600 line-through decoration-2">${plan.oldPrice}</span>
+                        )}
                         <span className="font-body text-[11px] font-semibold text-neutral-500">Only</span>
                     </span>
                 </div>
