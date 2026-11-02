@@ -9,7 +9,7 @@ const USEFUL_LINKS = [
     { label: "Home", to: "/" },
     { label: "About", to: "/about" },
     { label: "Services", to: "/services" },
-    { label: "Projects", to: "/#portfolio" },
+    { label: "Pricing", to: "/pricing" },
     { label: "Reviews", to: "/reviews" },
     { label: "Contact us", to: "/contact" },
 ];
@@ -268,6 +268,12 @@ export default function Footer() {
                         </span>
                         <Link to="/terms" className="hover:text-brand-dark hover:underline">
                             Terms &amp; Conditions
+                        </Link>
+                        <span aria-hidden="true" className="text-neutral-400">
+                            |
+                        </span>
+                        <Link to="/refund-policy" className="hover:text-brand-dark hover:underline">
+                            Refund Policy
                         </Link>
                     </nav>
                 </div>

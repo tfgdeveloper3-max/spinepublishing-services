@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 
-export const SITE_URL = "https://spinepublishingservices.com"; 
+export const SITE_URL = "https://spinepublishingservices.com";
 export const SITE_NAME = "Spine Publishing Services";
-const DEFAULT_IMAGE = "/images/og-image.jpg"; 
+const DEFAULT_IMAGE = "/images/og-image.jpg";
 
 type SeoProps = {
     title: string;
     description: string;
-    path: string; 
+    path: string;
     image?: string;
     noindex?: boolean;
 };
@@ -60,6 +60,17 @@ export const SEO = {
         description:
             "The terms that apply when you use the Spine Publishing Services website and purchase our editing, design, publishing, and marketing services.",
         path: "/terms",
+    },
+    refund: {
+        title: "Refund & Cancellation Policy | Spine Publishing Services",
+        description: "Refund eligibility, cancellation terms, and how refund requests are processed at Spine Publishing Services.",
+        path: "/refund-policy",
+    },
+    thankYou: {
+        title: "Thank You | Spine Publishing Services",
+        description: "Thank you for contacting Spine Publishing Services. A publishing specialist will get in touch within one business day.",
+        path: "/thank-you",
+        noindex: true,
     },
     notFound: {
         title: "Page Not Found | Spine Publishing Services",

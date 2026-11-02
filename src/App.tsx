@@ -12,6 +12,8 @@ import LiveChat from "./components/TawkChat";
 import { LeadModalProvider } from "./components/LeadModal";
 import PrivacyPage from "./pages/Privacy/page";
 import TermsPage from "./pages/Terms/page";
+import ThankYou from "./components/Thank-you";
+import RefundPage from "./pages/Refund/page";
 
 export default function App() {
   return (
@@ -28,6 +30,8 @@ export default function App() {
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
+            <Route path="/refund-policy" element={<RefundPage />} />
+            <Route path="/thank-you" element={<ThankYou />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </LeadModalProvider>

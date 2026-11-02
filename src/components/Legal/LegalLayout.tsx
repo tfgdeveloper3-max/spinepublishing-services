@@ -1,15 +1,9 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 
-/* =========================================================
-   Layout for legal pages (Privacy Policy, Terms & Conditions).
-   The page passes its sections; this adds the numbering,
-   the "On this page" side menu and the styling.
-   ========================================================= */
 
 export type LegalSection = { title: string; content: ReactNode };
 
-/* ---------- small building blocks used inside the page content ---------- */
 export function P({ children }: { children: ReactNode }) {
     return <p className="my-4">{children}</p>;
 }
@@ -35,7 +29,6 @@ export function B({ children }: { children: ReactNode }) {
     return <strong className="font-semibold text-[#2c2340]">{children}</strong>;
 }
 
-/* ---------- layout ---------- */
 export default function LegalLayout({
     intro,
     sections,
@@ -47,7 +40,6 @@ export default function LegalLayout({
 }) {
     const ids = sections.map((_, i) => `section-${i + 1}`);
 
-    // highlight the section currently on screen in the side menu
     const [activeId, setActiveId] = useState(ids[0]);
     useEffect(() => {
         const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
@@ -62,7 +54,6 @@ export default function LegalLayout({
         );
         els.forEach((el) => io.observe(el));
         return () => io.disconnect();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sections.length]);
 
     const scrollTo = (id: string) => {

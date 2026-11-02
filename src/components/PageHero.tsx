@@ -6,7 +6,7 @@ import { openLiveChat } from "@/lib/Livechat";
 
 type PageHeroProps = {
     title: string;
-    description: string;
+    description?: string;
     showButtons?: boolean;
     showBadges?: boolean;
 };

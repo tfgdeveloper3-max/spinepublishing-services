@@ -5,7 +5,6 @@ import Footer, { CONTACT } from "../../components/Footer";
 import LegalLayout, { B, List, P, Sub, type LegalSection } from "../../components/Legal/LegalLayout";
 
 const TITLE = "Privacy Policy";
-const EFFECTIVE_DATE = "October 28, 2026";
 
 const LINK = "break-all text-brand-dark underline decoration-brand-light/60 underline-offset-2 hover:decoration-brand-dark";
 
@@ -243,7 +242,7 @@ export default function PrivacyPage() {
             <main className="overflow-x-clip">
                 <div className="bg-hero">
                     <Navbar />
-                    <PageHero title={TITLE} description={`Effective Date: ${EFFECTIVE_DATE}`} showButtons={false} showBadges={false} />
+                    <PageHero title={TITLE} showButtons={false} showBadges={false} />
                 </div>
                 <LegalLayout intro={INTRO} sections={SECTIONS} otherDoc={{ label: "Terms & Conditions", to: "/terms" }} />
             </main>

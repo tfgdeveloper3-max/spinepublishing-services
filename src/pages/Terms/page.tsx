@@ -5,7 +5,6 @@ import Footer from "../../components/Footer";
 import LegalLayout, { List, P, type LegalSection } from "../../components/Legal/LegalLayout";
 
 const TITLE = "Terms and Conditions";
-const EFFECTIVE_DATE = "October 28, 2026";
 
 const INTRO = (
     <>
@@ -238,7 +237,7 @@ export default function TermsPage() {
             <main className="overflow-x-clip">
                 <div className="bg-hero">
                     <Navbar />
-                    <PageHero title={TITLE} description={`Effective Date: ${EFFECTIVE_DATE}`} showButtons={false} showBadges={false} />
+                    <PageHero title={TITLE} showButtons={false} showBadges={false} />
                 </div>
                 <LegalLayout intro={INTRO} sections={SECTIONS} otherDoc={{ label: "Privacy Policy", to: "/privacy" }} />
             </main>

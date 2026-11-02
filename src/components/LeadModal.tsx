@@ -10,11 +10,14 @@ import {
     type ReactNode,
     type Ref,
 } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { EASE } from "./motion";
 import { submitLead, withHeading } from "../lib/submitLead";
+import { saveThankYouState, THANK_YOU_PATH, type ThankYouState } from "@/lib/thankyou"
 
-export type SelectedPlan = { name: string; price: number };
+
+export type SelectedPlan = { name: string; price: number }; 
 
 type LeadModalContextValue = {
     openLeadModal: () => void;
@@ -28,6 +31,7 @@ export function useLeadModal() {
     return ctx;
 }
 
+/** NOTE: must be rendered inside <BrowserRouter> because the modal uses useNavigate. */
 export function LeadModalProvider({ children }: { children: ReactNode }) {
     const [open, setOpen] = useState(false);
     const [plan, setPlan] = useState<SelectedPlan | null>(null);
@@ -40,11 +44,12 @@ export function LeadModalProvider({ children }: { children: ReactNode }) {
         setPlan(p);
         setOpen(true);
     }, []);
+    const close = useCallback(() => setOpen(false), []);
 
     return (
         <LeadModalContext.Provider value={{ openLeadModal, openLeadModalForPlan }}>
             {children}
-            <LeadModal open={open} plan={plan} onClose={() => setOpen(false)} />
+            <LeadModal open={open} plan={plan} onClose={close} />
         </LeadModalContext.Provider>
     );
 }
@@ -72,9 +77,11 @@ const inputCls =
 function LeadModal({ open, plan, onClose }: { open: boolean; plan: SelectedPlan | null; onClose: () => void }) {
     const [fields, setFields] = useState<Fields>(EMPTY);
     const [errors, setErrors] = useState<Errors>({});
-    const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+    const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
     const firstInputRef = useRef<HTMLInputElement>(null);
     const dialogRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     // reset when closed
     useEffect(() => {
@@ -145,7 +152,17 @@ function LeadModal({ open, plan, onClose }: { open: boolean; plan: SelectedPlan 
                     ? withHeading(`Selected Plan: ${plan.name} ($${plan.price})`, fields.message)
                     : fields.message.trim(),
             });
-            setStatus("sent");
+
+            // remember where the user came from, then go to the thank-you page
+            const thankYouState: ThankYouState = {
+                from: `${location.pathname}${location.search}${location.hash}`,
+                name: fields.name.trim(),
+                email: fields.email.trim(),
+                plan,
+            };
+            saveThankYouState(thankYouState);
+            onClose();
+            navigate(THANK_YOU_PATH, { state: thankYouState });
         } catch (err) {
             console.error(err);
             setStatus("error");
@@ -248,112 +265,65 @@ function LeadModal({ open, plan, onClose }: { open: boolean; plan: SelectedPlan 
 
                         {/* body */}
                         <div className="px-7 py-7 2xl:px-9 2xl:py-8">
-                            <AnimatePresence mode="wait" initial={false}>
-                                {status === "sent" ? (
-                                    <motion.div
-                                        key="success"
-                                        className="flex flex-col items-center py-6 text-center"
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ duration: 0.4, ease: EASE }}
-                                    >
-                                        <motion.div
-                                            className="bg-brand-gradient flex h-16 w-16 items-center justify-center rounded-full text-white shadow-lg"
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ type: "spring", stiffness: 220, damping: 14, delay: 0.1 }}
-                                        >
-                                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                                <motion.path
-                                                    d="M5 12l5 5L20 7"
-                                                    initial={{ pathLength: 0 }}
-                                                    animate={{ pathLength: 1 }}
-                                                    transition={{ duration: 0.5, delay: 0.35 }}
-                                                />
-                                            </svg>
-                                        </motion.div>
-                                        <h3 className="mt-5 font-heading text-[24px] text-[#2c2c2c]">Thank You!</h3>
-                                        <p className="mt-2 max-w-[360px] font-body text-[15px] text-neutral-600" role="status">
-                                            We've received your details. Our team will reach out to you shortly.
+                            <form onSubmit={onSubmit} noValidate className="grid gap-4">
+                                {field("name", "Your Full Name", "text", firstInputRef)}
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    {field("email", "Email Address", "email")}
+                                    {field("phone", "Phone Number", "tel")}
+                                </div>
+                                <div>
+                                    <label htmlFor="lead-message" className="sr-only">
+                                        Tell us about your book
+                                    </label>
+                                    <textarea
+                                        id="lead-message"
+                                        name="message"
+                                        rows={4}
+                                        value={fields.message}
+                                        onChange={onChange}
+                                        placeholder={
+                                            plan
+                                                ? "Anything you'd like us to know about your book? (optional)"
+                                                : "Tell us about your book or what you need help with..."
+                                        }
+                                        aria-invalid={!!errors.message}
+                                        aria-describedby={errors.message ? "lead-message-error" : undefined}
+                                        className={`${inputCls} resize-none`}
+                                    />
+                                    {errors.message && (
+                                        <p id="lead-message-error" className="mt-1 font-body text-[12px] text-red-600">
+                                            {errors.message}
                                         </p>
-                                        <button
-                                            type="button"
-                                            onClick={onClose}
-                                            className="bg-brand-gradient mt-6 px-8 py-2.5 font-body text-[15px] font-semibold text-white"
-                                        >
-                                            Close
-                                        </button>
-                                    </motion.div>
-                                ) : (
-                                    <motion.form
-                                        key="form"
-                                        onSubmit={onSubmit}
-                                        noValidate
-                                        className="grid gap-4"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                    >
-                                        {field("name", "Your Full Name", "text", firstInputRef)}
-                                        <div className="grid gap-4 sm:grid-cols-2">
-                                            {field("email", "Email Address", "email")}
-                                            {field("phone", "Phone Number", "tel")}
-                                        </div>
-                                        <div>
-                                            <label htmlFor="lead-message" className="sr-only">
-                                                Tell us about your book
-                                            </label>
-                                            <textarea
-                                                id="lead-message"
-                                                name="message"
-                                                rows={4}
-                                                value={fields.message}
-                                                onChange={onChange}
-                                                placeholder={
-                                                    plan
-                                                        ? "Anything you'd like us to know about your book? (optional)"
-                                                        : "Tell us about your book or what you need help with..."
-                                                }
-                                                aria-invalid={!!errors.message}
-                                                aria-describedby={errors.message ? "lead-message-error" : undefined}
-                                                className={`${inputCls} resize-none`}
-                                            />
-                                            {errors.message && (
-                                                <p id="lead-message-error" className="mt-1 font-body text-[12px] text-red-600">
-                                                    {errors.message}
-                                                </p>
-                                            )}
-                                        </div>
+                                    )}
+                                </div>
 
-                                        {status === "error" && (
-                                            <p className="rounded-lg bg-red-50 px-4 py-3 font-body text-[13px] text-red-700" role="alert">
-                                                Sorry, something went wrong sending your details. Please try again, or email us directly.
-                                            </p>
-                                        )}
-
-                                        <motion.button
-                                            type="submit"
-                                            disabled={status === "sending"}
-                                            className="bg-brand-gradient mt-1 inline-flex w-full items-center justify-center gap-2 py-3.5 font-body text-[15px] font-semibold text-white shadow-[0_8px_20px_-8px_rgba(77,55,96,0.7)] disabled:cursor-wait disabled:opacity-80 2xl:text-[17px]"
-                                            whileHover={{ scale: status === "sending" ? 1 : 1.015 }}
-                                            whileTap={{ scale: 0.98 }}
-                                        >
-                                            {status === "sending" && (
-                                                <motion.span
-                                                    className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white"
-                                                    animate={{ rotate: 360 }}
-                                                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                                                />
-                                            )}
-                                            {status === "sending" ? "Sending..." : plan ? `Get Started with ${plan.name}` : "Get Started"}
-                                        </motion.button>
-
-                                        <p className="text-center font-body text-[12px] text-neutral-500">
-                                            Your information is kept private and only used to contact you about your book.
-                                        </p>
-                                    </motion.form>
+                                {status === "error" && (
+                                    <p className="rounded-lg bg-red-50 px-4 py-3 font-body text-[13px] text-red-700" role="alert">
+                                        Sorry, something went wrong sending your details. Please try again, or email us directly.
+                                    </p>
                                 )}
-                            </AnimatePresence>
+
+                                <motion.button
+                                    type="submit"
+                                    disabled={status === "sending"}
+                                    className="bg-brand-gradient mt-1 inline-flex w-full items-center justify-center gap-2 py-3.5 font-body text-[15px] font-semibold text-white shadow-[0_8px_20px_-8px_rgba(77,55,96,0.7)] disabled:cursor-wait disabled:opacity-80 2xl:text-[17px]"
+                                    whileHover={{ scale: status === "sending" ? 1 : 1.015 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    {status === "sending" && (
+                                        <motion.span
+                                            className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white"
+                                            animate={{ rotate: 360 }}
+                                            transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                                        />
+                                    )}
+                                    {status === "sending" ? "Sending..." : plan ? `Get Started with ${plan.name}` : "Get Started"}
+                                </motion.button>
+
+                                <p className="text-center font-body text-[12px] text-neutral-500">
+                                    Your information is kept private and only used to contact you about your book.
+                                </p>
+                            </form>
                         </div>
                     </motion.div>
                 </motion.div>
